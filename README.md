@@ -1,0 +1,1 @@
+This is the readme file for my final portfolio project, the Autism Ally. This application targets to provide support for people with autism as well as theirfamilies, while it demystifies the myths associated with autism here in Africa.

@@ -2,17 +2,98 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Autism Awareness</title>
+    <title>Autism Ally</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
 </head>
 <body>
-    <nav>
-        <a href="/">Home</a>
-        <a href="/login">Login</a>
-    </nav>
-    <div>
-        <h1>Welcome to Autism Awareness</h1>
-        <p>Your source for reliable information and support.</p>
-    </div>
+    <header>
+	<div class="logo">Autism Ally</div>
+		<nav>
+			<ul>
+				<li><a href="#hero">Home</a></li>
+				<li><a href="#about">About</a></li>
+				<li><a href="#features">Features</a></li>
+				<li><a href="#resources">Resources</a></li>
+				<li><a href="#community">Community</a></li>
+				<li><a href="#stories">Stories</a></li>
+				<li><a href="#contact">Contact</a></li>
+			</ul>
+		</nav>
+    </header>
+    <!-- Hero Section -->
+    <section id="hero">
+	<h1>Welcome to Autism Ally</h1>
+	<p>Supporting families and individuals with autism in Africa.</p>
+	<a href="#about" class="cta">Learn More</a>
+    </section>
+
+    <!-- About Section -->
+    <section id="about">
+        <h2>About Us</h2>
+	<p>Autism Ally is dedicated to dispelling myths and providing support for people with autism and their families in Africa.</p>
+	<a href="about.html">Read More</a>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features">
+	<h2>Features</h2>
+	<div class="feature">
+	    <h3>Information</h3>
+	    <p>Get accurate information about autism.</p>
+	</div>
+	<div class="feature">
+	    <h3>Resources</h3>
+	    <p>Find special centers and services near you.</p>
+	</div>
+	<div class="feature">
+	    <h3>Community Support</h3>
+	    <p>Join support groups and connect with others.</p>
+	</div>
+	<div class="feature">
+	    <h3>Success Stories</h3>
+	    <p>Read inspiring stories from the autism community.</p>
+	</div>
+    </section>
+
+    <!-- Resources Section -->
+    <section id="resources">
+	<h2>Resources</h2>
+	<p>Discover resources and special centers near you.</p>
+	<a href="resources.html">Find Resources</a>
+    </section>
+
+    <!-- Community Section -->
+    <section id="community">
+	<h2>Community Support</h2>
+	<p>Join our community and participate in discussions.</p>
+	<a href="community.html">Join Now</a>
+    </section>
+
+    <!-- Success Stories Section -->
+    <section id="stories">
+	<h2>Success Stories</h2>
+	<div class="stories-grid">
+	    <!-- Example Story -->
+	    <div class="story">
+	        <h3>John's Journey</h3>
+	        <p>An inspiring story of overcoming challenges.</p>
+	    </div>
+	    <!-- Add more stories here -->
+	</div>
+	<a href="stories.html">Read More Stories</a>
+    </section>
+    <!-- Footer -->
+    <footer>
+	<p>Contact us at <a href="mailto:info@autismally.org">info@autismally.org</a></p>
+	<p>Follow us on 
+	<a href="#">Facebook</a>, 
+	<a href="#">Twitter</a>, 
+	<a href="#">Instagram</a>
+	</p>
+	<p>&copy; 2024 Autism Ally. All rights reserved.</p>
+    </footer>
+
+    <!-- Include JavaScript files -->
+    <script src="static/js/scripts.js"></script
 </body>
 </html>

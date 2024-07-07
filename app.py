@@ -36,14 +36,25 @@ def create_app():
     def home():
         return render_template("index.html")
 
-    @app.route('/register', methods=['POST'])
-    def register():
-        data = request.get_json()
-        hashed_password = generate_password_hash(data['password'], method='sha256')
-        new_user = User(username=data['username'], password=hashed_password)
-        db.session.add(new_user)
-        db.session.commit()
-        return jsonify({'message': 'User registered successfully!'})
+    @app.route('/signup', methods=['GET', 'POST'])
+    def signup():
+        if request.method == 'POST':
+            #Get user data from request
+            username = request.form['username']
+            email = request.form['email']
+            password = request.form['password']
+            hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')  #Hash password
+            
+            # if username/email already exists render login page
+            if User.query.filter_by(username=username).first() or User.query.filter_by(email=email).first():
+                return redirect(url_for('/login')  # error='User already exists. Please log in.')
+
+            #Create new user and redirect to their dashboard
+            new_user = User(username=username, email=email, password=hashed_password)
+            db.session.add(new_user)
+            db.session.commit()
+            return redirect(url_for('/dashboard'))
+        return render_template('auth.html', action='Sign Up', url=url_for('signup'))
 
     @app.route('/login', methods=['POST'])
     def login():

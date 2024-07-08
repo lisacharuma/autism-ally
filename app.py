@@ -15,7 +15,7 @@ def create_app():
 
     """Database configuration"""
     basedir = os.path.abspath(os.path.dirname(__file__))
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'data.sqlite')
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'autism_all.db')
 
     """Sqlalchemy track modification"""
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -47,32 +47,61 @@ def create_app():
             
             # if username/email already exists render login page
             if User.query.filter_by(username=username).first() or User.query.filter_by(email=email).first():
-                return redirect(url_for('/login')  # error='User already exists. Please log in.')
+                return redirect(url_for('login'))  # error='User already exists. Please log in.')
 
             #Create new user and redirect to their dashboard
             new_user = User(username=username, email=email, password=hashed_password)
             db.session.add(new_user)
             db.session.commit()
-            return redirect(url_for('/dashboard'))
+
+            # Store user's ID in session
+            session['user_id'] = new_user.id
+
+            return redirect(url_for('dashboard'))
         return render_template('auth.html', action='Sign Up', url=url_for('signup'))
 
-    @app.route('/login', methods=['POST'])
+
+    @app.route('/login', methods=['GET','POST'])
     def login():
-        data = request.get_json()
-        user = User.query.filter_by(username=data['username']).first()
-        if user and check_password_hash(user.password, data['password']):
-            session['user_id'] = user.id
-            session['username'] = user.username
-            return jsonify({'message': 'Login successful!'})
-        return jsonify({'message': 'Invalid credentials!'}), 401
+        if request.method == 'POST':
+            username = request.form['username']
+            password = request.form['password']
+
+            #Notify and redirect to login if username/email are not provided
+            if not username or not password:
+                 return render_template("auth.html", error='Missing username/email or password')
+            #Query for the user    
+            user = User.query.filter_by(username=username).first()
+            if user and bcrypt.check_password_hash(user.password, password):
+                session['user_id'] = user.id
+                session['username'] = user.username
+               # session['email'] = user.email
+                return redirect(url_for('dashboard'))
+            return 'Invalid credentials'
+        return render_template('auth.html', action='Login', url=url_for('login'))
+
+
+    @app.route('/dashboard')
+    def dashboard():
+        user_id = session.get('user_id')  # Get the user_id from the session
+        username = session.get('username')
+        email = session.get('email')
+
+        if 'user_id' not in session:
+            return redirect(url_for('login'))
+        # Pass user_id to the template
+        return render_template("dashboard.html", user_id=user_id, username=username, email=email)
+
+
+
 
     return app
 app = create_app()
 
 if __name__ == "__main__":
     # Importing db here ensures it's imported within the application context.
-    #from app import db
+    from app import db
     # Create the database tables based on the defined models
-    #with app.app_context():
-     #   db.create_all()
+    with app.app_context():
+        db.create_all()
     app.run(debug=True)

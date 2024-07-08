@@ -15,7 +15,7 @@ def create_app():
 
     """Database configuration"""
     basedir = os.path.abspath(os.path.dirname(__file__))
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'autism_all.db')
+    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + os.path.join(basedir, 'autism_ally.db')
 
     """Sqlalchemy track modification"""
     app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -91,6 +91,12 @@ def create_app():
             return redirect(url_for('login'))
         # Pass user_id to the template
         return render_template("dashboard.html", user_id=user_id, username=username, email=email)
+
+
+    @app.route('/logout')
+    def logout():
+        session.clear()
+        return redirect(url_for('home'))
 
 
 

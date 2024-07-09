@@ -89,14 +89,69 @@ def create_app():
 
         if 'user_id' not in session:
             return redirect(url_for('login'))
+
+        user = User.query.get(user_id)
+        if not user:
+            return redirect(url_for('login'))
+
         # Pass user_id to the template
-        return render_template("dashboard.html", user_id=user_id, username=username, email=email)
+        return render_template("dashboard.html", user=user)
 
 
     @app.route('/logout')
     def logout():
         session.clear()
         return redirect(url_for('home'))
+
+    @app.route('/create_post', methods=['POST'])
+    def create_post():
+        if 'user_id' not in session:
+            return redirect(url_for('login'))
+        title = request.form['title']
+        content = request.form['content']
+        new_post = Post(title=title, content=content, user_id=session['user_id'])
+        db.session.add(new_post)
+        db.session.commit()
+        return redirect(url_for('dashboard'))
+
+
+    @app.route('/posts')
+    def posts():
+        all_posts = Post.query.all()
+        return render_template('posts.html', posts=all_posts)
+
+
+    @app.route('/my_posts')
+    def my_posts():
+        if 'user_id' not in session:
+            return redirect(url_for('login'))
+        user_posts = Post.query.filter_by(user_id=session['user_id']).all()
+        return render_template('my_posts.html', posts=user_posts)
+
+
+    @app.route('/my_resources')
+    def my_resources():
+        # Implement logic to fetch resources near the user
+        user_resources = []  # Replace with actual resources
+        return render_template('my_resources.html', resources=user_resources)
+
+
+    @app.route('/update_profile', methods=['POST'])
+    def update_profile():
+        if 'user_id' not in session:
+            return redirect(url_for('login'))
+        user = User.query.get(session['user_id'])
+        user.username = request.form['username']
+        user.email = request.form['email']
+        if 'profile_picture' in request.files:
+            profile_picture = request.files['profile_picture']
+            if profile_picture.filename != '':
+                filepath = os.path.join('static/uploads', profile_picture.filename)
+                profile_picture.save(filepath)
+                user.profile_picture = filepath
+        db.session.commit()
+        return redirect(url_for('dashboard'))
+
 
 
 

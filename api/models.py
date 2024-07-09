@@ -9,7 +9,7 @@ class User(db.Model):
     username = db.Column(db.String(150), nullable=False, unique=True)
     email = db.Column(db.String(150), nullable=False, unique=True)
     password = db.Column(db.String(150), nullable=False)
-    posts = db.relationship('Post', backref='author', lazy=True)
+    posts = db.relationship('Post', back_populates='user', lazy='dynamic')
 
 #Resource Model
 class Resource(db.Model):
@@ -42,4 +42,5 @@ class Post(db.Model):
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     content = db.Column(db.Text, nullable=False)
     title = db.Column(db.String(200), nullable=False)
-    user = db.relationship('User', backref=db.backref('posts', lazy=True))
+
+    user = db.relationship('User', back_populates='posts')

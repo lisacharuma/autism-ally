@@ -4,23 +4,75 @@
     <meta charset="UTF-8">
     <title>Dashboard</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 </head>
 <body>
     <nav>
         <a href="/">Home</a>
         <a href="/logout">Logout</a>
     </nav>
-    <div>
-        <h1>Dashboard</h1>
+    <div class="dashboard-container">
         <p>Welcome, {{ session['username'] }}!</p>
-        <div id="success-stories">
-            <!-- Success Stories -->
+        <div class="sidebar">
+	    <h3>Dashboard</h3>
+	    <a href="#create-post">Create Post</a>
+	    <a href="#posts">Posts</a>
+	    <a href="#my-posts">My Posts</a>
+	    <a href="#my-resources">My Resources</a>
+	    <a href="#profile">Profile</a>
         </div>
-        <div id="resources">
-            <!-- Resources -->
-        </div>
-        <div id="community">
-            <!-- Community Discussion -->
+        <div class="main-content">
+            <section id="create-post">
+		<h2>Create Post</h2>
+		<form method="POST" action="{{ url_for('create_post') }}">
+		    <div>
+			<label for="title">Title</label>
+			<input type="text" id="title" name="title" required>
+		    </div>
+		    <div>
+			<label for="content">Content</label>
+			<textarea id="content" name="content" required></textarea>
+		    </div>
+		    <button type="submit">Submit</button>
+		</form>
+	    </section>
+
+	    <section id="posts">
+		<h2>Posts</h2>
+		<!-- Display all posts here -->
+	    </section>
+						            
+	    <section id="my-posts">
+		<h2>My Posts</h2>
+		<!-- Display user's posts here -->
+	    </section>
+												            
+	    <section id="my-resources">
+		<h2>My Resources</h2>
+		<!-- Display resources near the user here -->
+	    </section>
+
+	    <section id="profile">
+		<h2>Profile</h2>
+		<form method="POST" action="{{ url_for('update_profile') }}" enctype="multipart/form-data">
+		    	<div>
+			        <label for="username">Username</label>
+			        <input type="text" id="username" name="username" value="{{ user.username }}" required>
+		            </div>
+		            <div>
+			        <label for="email">Email</label>
+			        <input type="email" id="email" name="email" value="{{ user.email }}" required>
+		            </div>
+		            <div>
+			        <label for="profile_picture">Profile Picture</label>
+			        <input type="file" id="profile_picture" name="profile_picture">
+		    	        <label for="profile_picture">Choose a file</label>
+		            </div>
+		        <button type="submit">Update</button>
+		    </form>
+		</section>
+
+
         </div>
     </div>
 </body>

@@ -1,0 +1,31 @@
+<style>
+        .dashboard-container {
+		            display: flex;
+			            }
+				            .sidebar {
+						                width: 20%;
+								            background-color: #f8f9fa;
+									                padding: 20px;
+											        }
+												        .sidebar a {
+														            display: block;
+															                padding: 10px;
+																	            margin: 5px 0;
+																		                color: #333;
+																				            text-decoration: none;
+																					                border-radius: 5px;
+																							        }
+																								        .sidebar a:hover {
+																										            background-color: #e9ecef;
+																											            }
+																												            .main-content {
+																														                width: 80%;
+																																            padding: 20px;
+																																	            }
+																																		            .profile-container input[type="file"] {
+																																				                display: none;
+																																						        }
+																																							        .profile-container label {
+																																									            cursor: pointer;
+																																										                color: #007bff;
+																																												        }

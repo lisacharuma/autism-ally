@@ -9,7 +9,7 @@ class User(db.Model):
     username = db.Column(db.String(150), nullable=False, unique=True)
     email = db.Column(db.String(150), nullable=False, unique=True)
     password = db.Column(db.String(150), nullable=False)
-    posts = db.relationship('DiscussionPost', backref='author', lazy=True)
+    posts = db.relationship('Post', backref='author', lazy=True)
 
 #Resource Model
 class Resource(db.Model):
@@ -37,7 +37,9 @@ class SuccessStory(db.Model):
     content = db.Column(db.Text, nullable=False)
 
 
-class DiscussionPost(db.Model):
+class Post(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     content = db.Column(db.Text, nullable=False)
+    title = db.Column(db.String(200), nullable=False)
+    user = db.relationship('User', backref=db.backref('posts', lazy=True))

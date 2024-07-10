@@ -7,72 +7,30 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 </head>
 <body>
+	<header>
     <nav>
         <a href="/">Home</a>
         <a href="/logout">Logout</a>
+		<ul>
+			<li> <a href="/posts">Posts</a> </li>
+			<li> <a href="/create_post">Create Post</a> </li>
+			<li> <a href="#my-posts">My Posts</a> </li>
+			<li>  <a href="#my-resources">My Resources</a> </li>
+			<li> <a href="#profile">Profile</a> </li>
+		</ul>
     </nav>
+	</header>
     <div class="dashboard-container">
-        <p>Welcome, {{ session['username'] }}!</p>
-        <div class="sidebar">
-	    <h3>Dashboard</h3>
-	    <a href="#create-post">Create Post</a>
-	    <a href="#posts">Posts</a>
-	    <a href="#my-posts">My Posts</a>
-	    <a href="#my-resources">My Resources</a>
-	    <a href="#profile">Profile</a>
-        </div>
+        <h1>Welcome To Your Dashboard {{ session['username'] }}!</h1>
         <div class="main-content">
-            <section id="create-post">
-		<h2>Create Post</h2>
-		<form method="POST" action="{{ url_for('create_post') }}">
-		    <div>
-			<label for="title">Title</label>
-			<input type="text" id="title" name="title" required>
-		    </div>
-		    <div>
-			<label for="content">Content</label>
-			<textarea id="content" name="content" required></textarea>
-		    </div>
-		    <button type="submit">Submit</button>
-		</form>
-	    </section>
-
-	    <section id="posts">
-		<h2>Posts</h2>
-		<!-- Display all posts here -->
-	    </section>
-						            
-	    <section id="my-posts">
-		<h2>My Posts</h2>
-		<!-- Display user's posts here -->
-	    </section>
-												            
-	    <section id="my-resources">
-		<h2>My Resources</h2>
-		<!-- Display resources near the user here -->
-	    </section>
-
-	    <section id="profile">
-		<h2>Profile</h2>
-		<form method="POST" action="{{ url_for('update_profile') }}" enctype="multipart/form-data">
-		    	<div>
-			        <label for="username">Username</label>
-			        <input type="text" id="username" name="username" value="{{ user.username }}" required>
-		            </div>
-		            <div>
-			        <label for="email">Email</label>
-			        <input type="email" id="email" name="email" value="{{ user.email }}" required>
-		            </div>
-		            <div>
-			        <label for="profile_picture">Profile Picture</label>
-			        <input type="file" id="profile_picture" name="profile_picture">
-		    	        <label for="profile_picture">Choose a file</label>
-		            </div>
-		        <button type="submit">Update</button>
-		    </form>
-		</section>
-
-
+            <section id="posts">
+				<h2>Posts</h2>
+					{% for post in posts %}
+                        <h3> {{post.title }} </h3>
+                        <p>By {{post.user.username}} </p>
+                        <p>{{post.content }} </p>
+                	{% endfor %}
+			</section>
         </div>
     </div>
 </body>

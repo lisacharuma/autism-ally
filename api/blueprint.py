@@ -2,7 +2,7 @@
 
 from flask import Blueprint
 
-app_views = Blueprint('app_views', __name__, url_prefix='/api')
+api_views = Blueprint('api_views', __name__)
 
 from .users import *
 from .resources import *

@@ -4,7 +4,7 @@ from api.db import db        #imports the database setup
 from api.models import ma
 from flask_cors import CORS  # Import the CORS module
 import os
-from api.models import User, Resource, SuccessStory, Post
+from api.models import User, Resource, SuccessStory, Post, user_resource_association
 
 
 # the application factory
@@ -25,7 +25,7 @@ def create_app():
 	"""Initialize marshmallow"""
 	ma.init_app(app)
 	"""Register blueprint"""
-	# app.register_blueprint(app_views)
+	#app.register_blueprint(api_views)
 	"""implement cors to all origin"""
 	cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 	"""Initialize bcrypt"""
@@ -43,6 +43,7 @@ def create_app():
 			username = request.form['username']
 			email = request.form['email']
 			password = request.form['password']
+			city = request.form['city']
 			hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')  #Hash password
             
 			# if username/email already exists render login page
@@ -50,7 +51,7 @@ def create_app():
 				return redirect(url_for('login'))  # error='User already exists. Please log in.')
 
 			#Create new user and redirect to their dashboard
-			new_user = User(username=username, email=email, password=hashed_password)
+			new_user = User(username=username, email=email, password=hashed_password, city=city)
 			db.session.add(new_user)
 			db.session.commit()
 
@@ -134,9 +135,15 @@ def create_app():
 
 	@app.route('/my_resources')
 	def my_resources():
-		# Implement logic to fetch resources near the user
-		user_resources = []  # Replace with actual resources
-		return render_template('my_resources.html', resources=user_resources)
+		if "user_id" not in session:
+			return redirect(url_for('login'))
+
+		user_id = session['user_id']
+		user = User.query.get(user_id)
+
+		# Query to find resources in the user's city
+		resources = Resource.query.filter_by(city=user.city).all()
+		return render_template('my_resources.html', resources=resources)
 
 
 	@app.route('/update_profile', methods=['POST'])

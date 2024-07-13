@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, session, redirect, url_for, jsonify
 from flask_bcrypt import Bcrypt  # Import bcrypt for pswd hashing
+from api.blueprint import api_views
 from api.db import db        #imports the database setup
 from api.models import ma
 from flask_cors import CORS  # Import the CORS module
@@ -25,7 +26,7 @@ def create_app():
 	"""Initialize marshmallow"""
 	ma.init_app(app)
 	"""Register blueprint"""
-	#app.register_blueprint(api_views)
+	app.register_blueprint(api_views)
 	"""implement cors to all origin"""
 	cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 	"""Initialize bcrypt"""
@@ -36,50 +37,16 @@ def create_app():
 	def home():
 		return render_template("index.html")
 
+
+	#Only renders template. Logic is in api/users.py
 	@app.route('/signup', methods=['GET', 'POST'])
 	def signup():
-		if request.method == 'POST':
-			#Get user data from request
-			username = request.form['username']
-			email = request.form['email']
-			password = request.form['password']
-			city = request.form['city']
-			hashed_password = bcrypt.generate_password_hash(password).decode('utf-8')  #Hash password
-            
-			# if username/email already exists render login page
-			if User.query.filter_by(username=username).first() or User.query.filter_by(email=email).first():
-				return redirect(url_for('login'))  # error='User already exists. Please log in.')
-
-			#Create new user and redirect to their dashboard
-			new_user = User(username=username, email=email, password=hashed_password, city=city)
-			db.session.add(new_user)
-			db.session.commit()
-
-			# Store user's ID in session
-			session['user_id'] = new_user.id
-
-			return redirect(url_for('dashboard'))
-		return render_template('auth.html', action='Sign Up', url=url_for('signup'))
+		return render_template('auth.html', action='Sign Up', url=url_for('api_views.create_user'))
 
 
 	@app.route('/login', methods=['GET','POST'])
 	def login():
-		if request.method == 'POST':
-			username = request.form['username']
-			password = request.form['password']
-
-			#Notify and redirect to login if username/email are not provided
-			if not username or not password:
-				return render_template("auth.html", error='Missing username/email or password')
-			#Query for the user    
-			user = User.query.filter_by(username=username).first()
-			if user and bcrypt.check_password_hash(user.password, password):
-				session['user_id'] = user.id
-				session['username'] = user.username
-				# session['email'] = user.email
-				return redirect(url_for('dashboard'))
-			return 'Invalid credentials'
-		return render_template('auth.html', action='Login', url=url_for('login'))
+		return render_template('auth.html', action='Login', url=url_for('api_views.login_user'))
 
 
 	@app.route('/dashboard')

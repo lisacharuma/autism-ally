@@ -1,15 +1,19 @@
 from flask import Blueprint, request, jsonify
-from .models import Resource, db
+from .models import ResourceSchema, Resource, db
 from api.db import db  # Import Database setup
 from sqlalchemy.exc import SQLAlchemyError
 from .blueprint import api_views
+
+# Initializing schema
+resource_schema = ResourceSchema()
+resources_schema = ResourceSchema(many=True)
 
 
 @api_views.route('/resources', methods=['GET'])
 def show_resources():
 	try:
 		resources = Resource.query.all()
-		return jsonify([resource.serialize() for resource in resources])
+		return jsonify(resources_schema.dump(resources))
 	except SQLAlchemyError as e:
 		return jsonify({'error': str(e)}), 500
 
@@ -20,13 +24,13 @@ def create_resource():
 		data = request.get_json()
 		name = data.get('name')
 		description = data.get('description')
-        city = data.get('city')
+		city = data.get('city')
 
 		new_resource = Resource(name=name, description=description, city=city)
 		db.session.add(new_resource)
 		db.session.commit()
         
-		return jsonify(new_resource.serialize()), 201
+		return jsonify(resource_schema.dump(new_resource)), 201
 	except SQLAlchemyError as e:
 		db.session.rollback()
 		return jsonify({'error': str(e)}), 500
@@ -46,7 +50,7 @@ def update_resource(id):
 
 		db.session.commit()
 
-		return jsonify(resource.serialize())
+		return jsonify(resource_schema.dump(resource))
 	except SQLAlchemyError as e:
 		db.session.rollback()
 		return jsonify({'error': str(e)}), 500

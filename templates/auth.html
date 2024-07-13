@@ -20,17 +20,17 @@
     </header>
     <main class="auth-container">
 	    <h1>{{ action }}</h1>
-	    <form action="{{ url }}" method="POST">
+	    <form id="authForm" action="{{ url }}" method="POST">
 		    <label for="username">Username</label>
 		    <input type="text" id="username" name="username" required>
 		    {% if action == 'Sign Up' %}
 		    	<label for="email">Email</label>
-			<input type="email" id="email" name="email" required>
+				<input type="email" id="email" name="email" required>
+				<label for="city">City</label>
+            	<input type="text" id="city" name="city" required>
 		    {% endif %}
 		    <label for="password">Password</label>
 		    <input type="password" id="password" name="password" required>
-			<label for="city">City</label>
-        	<input type="text" id="city" name="city" required>
 		    <button type="submit">{{ action }}</button>
 	    </form>
 	    {% if action == 'Login' %}
@@ -39,5 +39,40 @@
 	    	    <p>Already have an account? <a href="/login">Login</a></p>
 	    {% endif %}
     </main>
+	<script>
+    document.getElementById('authForm').addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        const formData = {
+            username: event.target.username.value,
+            email: event.target.email ? event.target.email.value : null,
+            password: event.target.password.value,
+            city: event.target.city.value
+        };
+
+        const url = '{{ url }}';
+
+        fetch(url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                // Redirect to the dashboard
+                window.location.href = '{{ url_for("dashboard") }}';
+            } else {
+                // Handle errors (e.g., user already exists)
+                alert(data.message || 'Error signing up. Please try again.');
+            }
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    });
+    </script>
 </body>
 </html>

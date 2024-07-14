@@ -56,20 +56,20 @@ def create_user():
 @api_views.route("/login", methods=["POST"], strict_slashes=False)
 def login_user():
 	data = request.json
+	print(data)
 
-	if "email" not in data or "password" not in data:
-		return jsonify({"error": "Missing email or password"}), 400
+	if "username" not in data or "password" not in data:
+		return jsonify({"error": "Missing username or password"}), 400
 
-	email = data["email"]
+	username = data["username"]
 	password = data["password"]
-	"""Fetch user by email from database"""
-	user = User.query.filter_by(email=email).first()
+	"""Fetch user by username from database"""
+	user = User.query.filter_by(username=username).first()
 	if user and bcrypt.check_password_hash(user.password, password):
-		user_schema = UserSchema()
+		#user_schema = UserSchema()
 		session['user_id'] = user.id
-		return jsonify(user_schema.dump(user)), 200
-	else:
-		return jsonify({"error": "Invalid email or password"}, 401)
+		return jsonify(success=True), 200
+	return jsonify(success=False, message='Invalid credentials')
 
 
 

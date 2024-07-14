@@ -19,33 +19,28 @@
 	 </nav>
     </header>
     <main class="auth-container">
-	    <h1>{{ action }}</h1>
+	    <h1>Sign Up</h1>
 	    <form id="authForm" action="{{ url }}"  method="POST">
 		    <label for="username">Username</label>
 		    <input type="text" id="username" name="username" required>
-		    {% if action == 'Sign Up' %}
-		    	<label for="email">Email</label>
-				<input type="email" id="email" name="email" required>
-				<label for="city">City</label>
-            	<input type="text" id="city" name="city" required>
-		    {% endif %}
+		    <label for="email">Email</label>
+			<input type="email" id="email" name="email" required>
+			<label for="city">City</label>
+            <input type="text" id="city" name="city" required>
 		    <label for="password">Password</label>
 		    <input type="password" id="password" name="password" required>
-		    <button type="submit">{{ action }}</button>
+		    <button type="submit">Sign Up</button>
 	    </form>
-	    {% if action == 'Login' %}
-	    	    <p>Don't have an account? <a href="/signup">Sign up</a></p>
-	    {% else %}
-	    	    <p>Already have an account? <a href="/login">Login</a></p>
-	    {% endif %}
+	    <p>Already have an account? <a href="/login">Login</a></p>
     </main>
+
 	<script>
     	document.getElementById('authForm').addEventListener('submit', function(event) {
         event.preventDefault(); // Prevent the default form submission
 
         const formData = {
             username: event.target.username.value,
-            email: event.target.email ? event.target.email.value : null,
+            email: event.target.email.value,
             password: event.target.password.value,
             city: event.target.city.value
         };

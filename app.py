@@ -41,12 +41,12 @@ def create_app():
 	#Only renders template. Logic is in api/users.py
 	@app.route('/signup', methods=['GET', 'POST'])
 	def signup():
-		return render_template('auth.html', action='Sign Up', url=url_for('api_views.create_user'))
+		return render_template('signup.html', action='Sign Up', url=url_for('api_views.create_user'))
 
 
 	@app.route('/login', methods=['GET','POST'])
 	def login():
-		return render_template('auth.html', action='Login', url=url_for('api_views.login_user'))
+		return render_template('login.html', action='Login', url=url_for('api_views.login_user'))
 
 
 	@app.route('/dashboard')

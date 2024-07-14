@@ -20,7 +20,7 @@
     </header>
     <main class="auth-container">
 	    <h1>{{ action }}</h1>
-	    <form id="authForm" action="{{ url }}" method="POST">
+	    <form id="authForm" action="{{ url }}"  method="POST">
 		    <label for="username">Username</label>
 		    <input type="text" id="username" name="username" required>
 		    {% if action == 'Sign Up' %}
@@ -40,7 +40,7 @@
 	    {% endif %}
     </main>
 	<script>
-    document.getElementById('authForm').addEventListener('submit', function(event) {
+    	document.getElementById('authForm').addEventListener('submit', function(event) {
         event.preventDefault(); // Prevent the default form submission
 
         const formData = {

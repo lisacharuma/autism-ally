@@ -1,6 +1,8 @@
 from flask import redirect, request, jsonify, session, url_for
 from api.db import db  # Import Database setup
-from flask_bcrypt import Bcrypt
+from flask_bcrypt import Bcrypt #for paswd hashing
+from werkzeug.utils import secure_filename  # validates filenames before saving them to the filesystem
+import os
 from .models import UserSchema, User
 from .blueprint import api_views
 
@@ -76,23 +78,33 @@ def login_user():
 """Update an existing user"""
 @api_views.route("/users/<int:user_id>", methods=["PUT"], strict_slashes=False)
 def update_user(user_id):
-    user = User.query.get(user_id)
-    if not user: # user doesn't exist, exit gracefully
-        return jsonify({"error": "User not found"}), 404
+	user = User.query.get(user_id)
+	if not user: # user doesn't exist, exit gracefully
+		return jsonify({"error": "User not found"}), 404
 
-    data = request.json
-    if "username" not in data and "email" not in data:
-        return jsonify({"error": "No data provided for update"}), 400
+	data = request.form
+	if not data:
+		return jsonify({"error": "No data provided for update"}), 400
 
-    if "username" in data:
-        user.username = data["username"]
+	if 'username' in data:
+		user.username = data['username']
 
-    if "email" in data:
-        user.email = data["email"]
+	if 'email' in data:
+		user.email = data['email']
 
-    db.session.commit()
-    user_schema = UserSchema()
-    return jsonify(user_schema.dump(user))
+	if 'city' in data:
+		user.city = data['city']
+
+	if 'image_file' in request.files:
+		file = request.files['image_files']
+		if file and allowed_file(file.filename):
+			filename = secure_filename(file.filename)
+			file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+			user.image_file = filename
+
+	db.session.commit()
+	user_schema = UserSchema()
+	return jsonify(user_schema.dump(user))
 
 
 """Delete an existing user"""

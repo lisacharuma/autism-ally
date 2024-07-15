@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ action }} - Autism Ally</title>
+    <link rel="stylesheet" href="static/css/styles.css">
+    <link rel="stylesheet" href="static/css/auth.css">
+</head>
+<body>
+    <header>
+        <p>Autism Ally</p>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/dashboard">Dashboard</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="auth-container">
+        <h1>{{ action }}</h1>
+        <form id="updateForm" enctype="multipart/form-data">
+            <label for="username">Username</label>
+            <input type="text" id="username" name="username" required>
+            <label for="email">Email</label>
+            <input type="email" id="email" name="email" required>
+            <label for="city">City</label>
+            <input type="text" id="city" name="city" required>
+            <label for="image">Profile Picture</label>
+            <input type="file" id="image" name="image">
+            <button type="submit">{{ action }}</button>
+        </form>
+    </main>
+    <script>
+        document.getElementById('updateForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+
+            const form = event.target;
+            const formData = new FormData(form);
+            const userId = '{{ session["user_id"] }}';
+            const url = '/users/' + userId;
+
+            const response = await fetch(url, {
+                method: 'PUT',
+                body: formData
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                window.location.href = '/dashboard';
+            } else {
+                alert(data.error || 'Error updating profile. Please try again.');
+            }
+        });
+    </script>
+</body>
+</html>
+

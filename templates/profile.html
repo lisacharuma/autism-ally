@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{{ user.username }}'s Profile - Autism Ally</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
+</head>
+<body>
+    <header>
+        <p>Autism Ally</p>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/profile">Profile</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main class="profile-container">
+        <h1>{{ user.username }}'s Profile</h1>
+        <div class="profile-info">
+            <img src="{{ url_for('static', filename='profile_pics/' + user.image_file) }}" alt="Profile Picture">
+            <p>Username: {{ user.username }}</p>
+            <p>Email: {{ user.email }}</p>
+            <p>City: {{ user.city }}</p>
+            <a href="/profile/update" class="btn">Update Profile</a>
+        </div>
+    </main>
+</body>
+</html>
+

@@ -21,6 +21,10 @@ def create_app():
 	"""Sqlalchemy track modification"""
 	app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
+	"""File upload configuration"""
+	app.config['UPLOAD_FOLDER'] = 'static/images/uploads'
+	app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
+
 	"""Initialize db"""
 	db.init_app(app)
 	"""Initialize marshmallow"""
@@ -31,6 +35,11 @@ def create_app():
 	cors = CORS(app, resources={r"/api/*": {"origins": "*"}})
 	"""Initialize bcrypt"""
 	bcrypt = Bcrypt(app)
+
+	
+	def allowed_file(filename):
+		return '.' in filename and \
+			filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
 
 	@app.route('/')
@@ -71,6 +80,17 @@ def create_app():
 	def logout():
 		session.clear()
 		return redirect(url_for('home'))
+
+	@app.route('/profile')
+	def profile():
+		if 'user_id' not in session:
+			return redirect(url_for('login'))
+
+		# Fetch the logged-in user's data from the database
+		user_id = session['user_id']
+		user = User.query.get(user_id)
+
+		return render_template('profile.html', user=user)
 
 	@app.route('/create_post', methods=['GET', 'POST'])
 	def create_post():
@@ -113,23 +133,9 @@ def create_app():
 		return render_template('my_resources.html', resources=resources)
 
 
-	@app.route('/update_profile', methods=['POST'])
+	@app.route('/profile/update', methods=['GET','POST'])
 	def update_profile():
-		if 'user_id' not in session:
-			return redirect(url_for('login'))
-		user = User.query.get(session['user_id'])
-		user.username = request.form['username']
-		user.email = request.form['email']
-		if 'profile_picture' in request.files:
-			profile_picture = request.files['profile_picture']
-			if profile_picture.filename != '':
-				filepath = os.path.join('static/uploads', profile_picture.filename)
-				profile_picture.save(filepath)
-				user.profile_picture = filepath
-		db.session.commit()
-		return redirect(url_for('dashboard'))
-
-
+		return render_template('update_user.html', action='Update Profile', url=url_for('api_views.update_user', user_id=session['user_id']))
 
 
 

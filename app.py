@@ -22,7 +22,7 @@ def create_app():
 	app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 	"""File upload configuration"""
-	app.config['UPLOAD_FOLDER'] = 'static/images/uploads'
+	app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'static/profile_pics')
 	app.config['ALLOWED_EXTENSIONS'] = {'png', 'jpg', 'jpeg', 'gif'}
 
 	"""Initialize db"""

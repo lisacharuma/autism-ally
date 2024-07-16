@@ -1,27 +1,36 @@
 <!DOCTYPE html>
-<html>
-        <head>
-                <meta charset="UTF-8">
-                <meta name="viewport" content="width=device-width, initial-scale=1.0">
-                <title>My Post</title>
-                <link rel="stylesheet" href="static/css/aut.css">
-                <link rel="icon" type="Image/png" href="/static/images/icon.png" />
-        </head>
-	<body>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Posts - Autism Ally</title>
+	<link rel="icon" type="Image/png" href="/static/images/aut.png" />
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+</head>
+<body>
+    <header>
         <nav>
-        <ul>
-            <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
-            <li><a href="{{ url_for('update_profile') }}">Profile</a></li>
-        </ul>
-    </nav>
-        <div id="content">
-        <h2>My Posts</h2>
-                {% for post in posts %}
-        			<div class="post">
-            		<h3>{{ post.title }}</h3>
-            		<p>{{ post.content }}</p>
-        			</div>
-    			{% endfor %}
+            <ul>
+                <li><a href="/">Home</a></li>
+                <li><a href="/logout">Logout</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div class="container">
+        {% include 'sidebar.html' %}
+        <div class="dashboard-container">
+            <h1>My Posts</h1>
+            <div class="main-content">
+                <section id="posts">
+                    {% for post in posts %}
+                        <div class="post">
+                            <h3>{{ post.title }}</h3>
+                            <p>{{ post.content }}</p>
+                        </div>
+                    {% endfor %}
+                </section>
+            </div>
         </div>
-	</body>
+    </div>
+</body>
 </html>

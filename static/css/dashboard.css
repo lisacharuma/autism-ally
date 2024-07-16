@@ -1,31 +1,105 @@
-<style>
-        .dashboard-container {
-		            display: flex;
-			            }
-				            .sidebar {
-						                width: 20%;
-								            background-color: #f8f9fa;
-									                padding: 20px;
-											        }
-												        .sidebar a {
-														            display: block;
-															                padding: 10px;
-																	            margin: 5px 0;
-																		                color: #333;
-																				            text-decoration: none;
-																					                border-radius: 5px;
-																							        }
-																								        .sidebar a:hover {
-																										            background-color: #e9ecef;
-																											            }
-																												            .main-content {
-																														                width: 80%;
-																																            padding: 20px;
-																																	            }
-																																		            .profile-container input[type="file"] {
-																																				                display: none;
-																																						        }
-																																							        .profile-container label {
-																																									            cursor: pointer;
-																																										                color: #007bff;
-																																												        }
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
+}
+
+header nav {
+    width: 100%;
+    background-color: seagreen;
+    padding: 10px 0;
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    justify-content: center;
+    padding: 0;
+    margin: 0;
+}
+
+header nav ul li {
+    margin: 0 15px;
+}
+
+header nav ul li a {
+    color: white;
+    text-decoration: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    transition: background-color 0.2s;
+}
+
+header nav ul li a:hover {
+    background-color: #0056b3;
+}
+
+.sidebar {
+  margin: 0;
+  padding: 0;
+  width: 200px;
+  background-color: #f1f1f1;
+  position: fixed;
+  height: 100%;
+  overflow: auto;
+}
+
+/* Sidebar links */
+.sidebar a {
+  display: block;
+  color: black;
+  padding: 16px;
+  text-decoration: none;
+}
+
+/* Active/current link */
+.sidebar a.active {
+  background-color: #04AA6D;
+  color: white;
+}
+
+/* Links on mouse-over */
+.sidebar a:hover:not(.active) {
+  background-color: #555;
+  color: white;
+}
+
+/* Page content. The value of the margin-left property should match the value of the sidebar's width property */
+div.dashboard-container {
+  margin-left: 200px;
+  padding: 1px 16px;
+  height: 1000px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.main-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Post Layout*/
+.post {
+    margin-bottom: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    text-align: justify;
+}
+
+.post h3 {
+    margin-top: 0;
+    font-size: 1.5em;
+}
+
+.post p {
+    margin: 10px 0 0;
+}
+

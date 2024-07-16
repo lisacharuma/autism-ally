@@ -9,6 +9,7 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/profile.css') }}">
 </head>
 <body>
+	<div class="container">
     <header>
         <p>Autism Ally</p>
         <nav>
@@ -20,15 +21,16 @@
         </nav>
     </header>
     <main class="profile-container">
-        <h1>{{ user.username }}'s Profile</h1>
+        <h3>{{ user.username }}</h3>
         <div class="profile-info">
-            <img src="{{ url_for('static', filename='profile_pics/' + user.image_file) if user.image_file != 'default.jpg' else url_for('static', filename='images/default.jpg') }}" alt="Profile Picture">
-            <p>Username: {{ user.username }}</p>
-            <p>Email: {{ user.email }}</p>
-            <p>City: {{ user.city }}</p>
+            <img class="profile-picture"  src="{{ url_for('static', filename='profile_pics/' + user.image_file) if user.image_file != 'default.jpg' else url_for('static', filename='images/default.jpg') }}" alt="Profile Picture">
+            <p>{{ user.username }}</p>
+            <p>{{ user.email }}</p>
+            <p>{{ user.city }}</p>
             <a href="/profile/update" class="btn">Update Profile</a>
         </div>
     </main>
+	</div>
 </body>
 </html>
 

@@ -4,34 +4,36 @@
     <meta charset="UTF-8">
     <title>Dashboard</title>
     <link rel="icon" type="Image/png" href="/static/images/aut.png" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
 </head>
 <body>
 	<header>
     <nav>
-        <a href="/">Home</a>
-        <a href="/logout">Logout</a>
 		<ul>
-			<li> <a href="/posts">Posts</a> </li>
-			<li> <a href="/create_post">Create Post</a> </li>
-			<li> <a href="/my_posts">My Posts</a> </li>
-			<li>  <a href="/my_resources">My Resources</a> </li>
-			<li> <a href="/profile">Profile</a> </li>
+        	<li> <a href="/">Home</a> </li>
+        	<li> <a href="/logout">Logout</a> </li>
 		</ul>
     </nav>
 	</header>
+	{% include 'sidebar.html' %}
+	<!--div class="sidebar"-->
+            <!--a href="/posts">Posts</a-->
+            <!--a href="/create_post">Create Post</a-->
+            <!--a href="/my_posts">My Posts</a--> 
+            <!--a href="/my_resources">My Resources</a-->
+            <!--a href="/profile">Profile</a--> 
+	<!--/div-->
     <div class="dashboard-container">
         <h1>Welcome To Your Dashboard {{ session['username'] }}!</h1>
         <div class="main-content">
-            <section id="posts">
-				<h2>Posts</h2>
-					{% for post in posts %}
-                        <h3> {{post.title }} </h3>
-                        <p>By {{post.user.username}} </p>
-                        <p>{{post.content }} </p>
-                	{% endfor %}
-			</section>
+			<h2>Posts</h2>
+				{% for post in posts %}
+					<div class='post'
+                    <h3> {{post.title }} </h3>
+                    <p>By {{post.user.username}} </p>
+                    <p>{{post.content }} </p>
+					</div>
+                {% endfor %}
         </div>
     </div>
 </body>

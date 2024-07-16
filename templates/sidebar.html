@@ -1,0 +1,8 @@
+<div class="sidebar">
+    <a href="/dashboard" class="{{ 'active' if request.path == '/dashboard' else '' }}">Dashboard</a>
+    <a href="/create_post" class="{{ 'active' if request.path == '/create_post' else '' }}">Create Post</a>
+    <a href="/my_posts" class="{{ 'active' if request.path == '/my_posts' else '' }}">My Posts</a>
+    <a href="/my_resources" class="{{ 'active' if request.path == '/my_resources' else '' }}">My Resources</a>
+    <a href="/profile" class="{{ 'active' if request.path == '/profile' else '' }}">Profile</a>
+</div>
+

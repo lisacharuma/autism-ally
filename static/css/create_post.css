@@ -1,0 +1,58 @@
+/* Ensure this file is included in the create_post.html template */
+
+.create-post-form {
+    background-color: white;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.create-post-form div {
+    margin-bottom: 15px;
+}
+
+.create-post-form label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.create-post-form input[type="text"],
+.create-post-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    border-radius: 0;
+    box-sizing: border-box;
+    background-color: #f4f4f4;
+    transition: border-color 0.3s;
+}
+
+.create-post-form input[type="text"]:focus,
+.create-post-form textarea:focus {
+    outline: none;
+    border-bottom-color: #007bff;
+}
+
+.create-post-form textarea {
+    height: 50vh; /* Adjust this value as needed */
+    resize: none; /* Prevent resizing */
+}
+
+.create-post-form button {
+    background-color: seagreen;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.create-post-form button:hover {
+    background-color: seablue;
+}
+

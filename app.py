@@ -50,6 +50,14 @@ def create_app():
 	def about():
 		return render_template("about.html")
 
+	@app.route('/information')
+	def information():
+		return render_template("information.html")
+
+	@app.route('/stories')
+	def stories():
+		return render_template("stories.html")
+
 
 	#Only renders template. Logic is in api/users.py
 	@app.route('/signup', methods=['GET', 'POST'])

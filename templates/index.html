@@ -14,14 +14,14 @@
 				<li><a href="#hero">Home</a></li>
 				<li><a href="/login">Login</a></li>
 				<li><a href="/signup">Sign Up</a></li>
-				<li><a href="#about">About</a></li>
+				<li><a href="/about">About</a></li>
 				<li class="dropdown">
                     <a href="#features" class="dropbtn">Features</a>
                     <div class="dropdown-content">
-                        <a href="#information">Information</a>
-                        <a href="#resources">Resources</a>
-                        <a href="#community">Community</a>
-                        <a href="#stories">Stories</a>
+                        <a href="/information">Information</a>
+                        <a href="#features">Resources</a>
+                        <a href="#features">Community</a>
+                        <a href="/stories">Stories</a>
                     </div>
                 </li>
 				<li><a href="#contact">Contact</a></li>
@@ -29,7 +29,7 @@
 		</nav>
     </header>
     <!-- Hero Section -->
-    <section id="hero">
+    <section id="hero" style="background-image: url('{{ url_for('static', filename='images/hero-background.jpg') }}')">
 		<div class="hero-content">
 			<h1>Autism Ally</h1>
 			<p>Empowering and supporting the autism community in Africa.</p>
@@ -52,53 +52,39 @@
 
     <!-- Features Section -->
     <section id="features">
-	<h2>Features</h2>
-	<div class="feature">
-	    <h3>Information</h3>
-	    <p>Get accurate information about autism.</p>
-	</div>
-	<div class="feature">
-	    <h3>Resources</h3>
-	    <p>Find special centers and services near you.</p>
-	</div>
-	<div class="feature">
-	    <h3>Community Support</h3>
-	    <p>Join support groups and connect with others.</p>
-	</div>
-	<div class="feature">
-	    <h3>Success Stories</h3>
-	    <p>Read inspiring stories from the autism community.</p>
-	</div>
-    </section>
+    <div class="feature" id="info">
+        <div class="feature-background"></div>
+        <div class="feature-content">
+            <h3>Information</h3>
+            <p>Get accurate information about autism.</p>
+			<a href="{{ url_for('information') }}">Read More</a>
+        </div>
+    </div>
+    <div class="feature" id="resources">
+        <div class="feature-background"></div>
+        <div class="feature-content">
+            <h3>Resources</h3>
+            <p><a href="/signup">Sign up</a> find special centers and services near you.</p>
+        </div>
+    </div>
+    <div class="feature" id="community">
+        <div class="feature-background"></div>
+        <div class="feature-content">
+            <h3>Community Support</h3>
+            <p><a href="/signup">Join</a> support groups and connect with others.</p>
+        </div>
+    </div>
+    <div class="feature" id="stories">
+        <div class="feature-background"></div>
+        <div class="feature-content">
+            <h3>Success Stories</h3>
+            <p>Read inspiring stories of famous figures who are diagnosed with the spectrum. It is not a disability but a different ability.</p>
+			 <a href="{{ url_for('stories') }}">Read More</a>
+        </div>
+    </div>
+	</section>
 
-    <!-- Resources Section -->
-    <section id="resources">
-	<h2>Resources</h2>
-	<p>Discover resources and special centers near you.</p>
-	<a href="resources.html">Find Resources</a>
-    </section>
 
-    <!-- Community Section -->
-    <section id="community">
-	<h2>Community Support</h2>
-	<p>Join our community and participate in discussions.</p>
-	<a href="community.html">Join Now</a>
-    </section>
-
-    <!-- Success Stories Section -->
-    <section id="stories">
-	<h2>Success Stories</h2>
-	<div class="stories-grid">
-	    <!-- Example Story -->
-	    <div class="story">
-	        <h3>John's Journey</h3>
-	        <p>An inspiring story of overcoming challenges.</p>
-	    </div>
-
-	    <!-- Add more stories here -->
-	</div>
-	<a href="stories.html">Read More Stories</a>
-    </section>
     <!-- Footer -->
     <footer>
 	<p>Contact us at <a href="mailto:info@autismally.org">info@autismally.org</a></p>
@@ -109,8 +95,5 @@
 	</p>
 	<p>&copy; 2024 Autism Ally. All rights reserved.</p>
     </footer>
-
-    <!-- Include JavaScript files -->
-    <script src="static/js/scripts.js"></script
 </body>
 </html>

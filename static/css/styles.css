@@ -31,7 +31,7 @@ nav ul li a {
 
 /* Hero section styling */
 #hero {
-    background-image: url('{{ url_for('static', filename='images/embrace.jpg') }}');
+    background-image: url('{{ url_for('static', filename='images/hero-background.jpg') }}');
     background-size: cover;
     background-position: center;
     color: white;

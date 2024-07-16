@@ -15,26 +15,39 @@
 				<li><a href="/login">Login</a></li>
 				<li><a href="/signup">Sign Up</a></li>
 				<li><a href="#about">About</a></li>
-				<li><a href="#features">Features</a></li>
-				<li><a href="#resources">Resources</a></li>
-				<li><a href="#community">Community</a></li>
-				<li><a href="#stories">Stories</a></li>
+				<li class="dropdown">
+                    <a href="#features" class="dropbtn">Features</a>
+                    <div class="dropdown-content">
+                        <a href="#information">Information</a>
+                        <a href="#resources">Resources</a>
+                        <a href="#community">Community</a>
+                        <a href="#stories">Stories</a>
+                    </div>
+                </li>
 				<li><a href="#contact">Contact</a></li>
 			</ul>
 		</nav>
     </header>
     <!-- Hero Section -->
     <section id="hero">
-	<h1>Welcome to Autism Ally</h1>
-	<p>Supporting families and individuals with autism in Africa.</p>
-	<a href="#about" class="cta">Learn More</a>
+		<div class="hero-content">
+			<h1>Autism Ally</h1>
+			<p>Empowering and supporting the autism community in Africa.</p>
+		</div>
     </section>
 
     <!-- About Section -->
     <section id="about">
-        <h2>About Us</h2>
-	<p>Autism Ally is dedicated to dispelling myths and providing support for people with autism and their families in Africa.</p>
-	<a href="about.html">Read More</a>
+		<div class="about-content">
+			<div class="image">
+                <img src="{{ url_for('static', filename='images/embrace.jpg') }}" alt="About Autism Ally">
+            </div>
+			<div class="text">
+        		<h2>About Us</h2>
+				<p>Autism Ally is dedicated to dispelling myths and providing support for people with autism and their families in Africa. We also want to raise awareness and acceptance of autism, eradicating social descrimination towards people with autism. That is the best way even anyone with the spectrum can get the love and support they need.</p>
+				<a href="{{ url_for('about') }}">Read More</a>
+			</div>
+		</div>
     </section>
 
     <!-- Features Section -->
@@ -81,6 +94,7 @@
 	        <h3>John's Journey</h3>
 	        <p>An inspiring story of overcoming challenges.</p>
 	    </div>
+
 	    <!-- Add more stories here -->
 	</div>
 	<a href="stories.html">Read More Stories</a>

@@ -46,6 +46,10 @@ def create_app():
 	def home():
 		return render_template("index.html")
 
+	@app.route('/about')
+	def about():
+		return render_template("about.html")
+
 
 	#Only renders template. Logic is in api/users.py
 	@app.route('/signup', methods=['GET', 'POST'])

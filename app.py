@@ -5,7 +5,7 @@ from api.db import db        #imports the database setup
 from api.models import ma
 from flask_cors import CORS  # Import the CORS module
 import os
-from api.models import User, Resource, SuccessStory, Post, user_resource_association
+from api.models import User, Resource, Post, user_resource_association
 
 
 # the application factory

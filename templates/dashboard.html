@@ -28,9 +28,9 @@
         <div class="main-content">
 			<h2>Posts</h2>
 				{% for post in posts %}
-					<div class='post'
+					<div class='post'>
                     <h3> {{post.title }} </h3>
-                    <p>By {{post.user.username}} </p>
+                    <p>By {{post.user.username}} : {{ post.date_posted.strftime('%Y-%m-%d %H:%M:%S') }}</p>
                     <p>{{post.content }} </p>
 					</div>
                 {% endfor %}

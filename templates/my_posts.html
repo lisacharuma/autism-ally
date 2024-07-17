@@ -24,13 +24,52 @@
                 <section id="posts">
                     {% for post in posts %}
                         <div class="post">
-                            <h3>{{ post.title }}</h3>
+                            <h5>{{ post.title }} : {{ post.date_posted.strftime('%Y-%m-%d %H:%M:%S') }}</p></h5>
                             <p>{{ post.content }}</p>
+							<button onclick="deletePost({{ post.id }})">Delete</button>
+        					<button onclick="updatePost({{ post.id }})">Update</button>
                         </div>
                     {% endfor %}
                 </section>
             </div>
         </div>
     </div>
+	<script>
+    function deletePost(postId) {
+        fetch(`/posts/${postId}`, {
+            method: 'DELETE'
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert(data.error);
+            } else {
+                alert('Post deleted successfully');
+                location.reload();
+            }
+        });
+    }
+
+    function updatePost(postId) {
+        const title = prompt('Enter new title:');
+        const content = prompt('Enter new content:');
+        fetch(`/posts/${postId}`, {
+            method: 'PUT',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ title: title, content: content })
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.error) {
+                alert(data.error);
+            } else {
+                alert('Post updated successfully');
+                location.reload();
+            }
+        });
+    }
+</script>
 </body>
 </html>

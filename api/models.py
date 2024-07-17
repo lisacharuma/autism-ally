@@ -2,6 +2,7 @@ from .db import db
 from flask_marshmallow import Marshmallow
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 ma = Marshmallow()
+from datetime import datetime
 
 
 user_resource_association = db.Table('user_resource_association',
@@ -31,6 +32,7 @@ class Post(db.Model):
 	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 	content = db.Column(db.Text, nullable=False)
 	title = db.Column(db.String(200), nullable=False)
+	date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
 
 	user = db.relationship('User', back_populates='posts')
 
@@ -44,11 +46,6 @@ class Resource(db.Model):
 	city = db.Column(db.String(80), nullable=False)
 	user = db.relationship('User', secondary=user_resource_association, back_populates='resource')
 
-#SuccessStory Model
-class SuccessStory(db.Model):
-	id = db.Column(db.Integer, primary_key=True)
-	title = db.Column(db.String(150), nullable=False)
-	content = db.Column(db.Text, nullable=False)
 
 # For serialization and deserialization
 class UserSchema(ma.SQLAlchemyAutoSchema):
@@ -58,6 +55,7 @@ class UserSchema(ma.SQLAlchemyAutoSchema):
 class PostSchema(ma.SQLAlchemyAutoSchema):
 	class Meta:
 		model = Post
+	date_posted = ma.auto_field()
 
 class ResourceSchema(ma.SQLAlchemyAutoSchema):
 	class Meta:

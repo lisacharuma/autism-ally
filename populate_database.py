@@ -1,5 +1,7 @@
 # scripts/populate_database.py
-from api.models import db, Resource
+from api.models import db, Resource, User, Post, Comment
+from datetime import datetime
+from werkzeug.security import generate_password_hash
 from app import create_app
 
 def populate_resources():
@@ -22,6 +24,8 @@ def populate_resources():
 			{"name": "Rahima Moosa Coronationville Mother and Child Hospital", "description": " ", "city": "Johannesburg"},
 			{"name": "Chris Hani Baragwanath Academic Hospital", "description": " ", "city": "Johannesburg"},
 			{"name": "Charlotte Maxeke Johannesburg Academic Hospital", "description": " ", "city": "Johannesburg"},
+			{"name": "Autism Center2", "description": "14 Nelson Mandela Drive ", "city": "Data"},
+			{"name": "Autism Center 3", "description": " 14 Address 5", "city": "Durban"},
 
 		]
 		for resource_data in resources:

@@ -23,10 +23,10 @@ def create_resource():
 	try:
 		data = request.get_json()
 		name = data.get('name')
-		description = data.get('description')
+		address = data.get('address')
 		city = data.get('city')
 
-		new_resource = Resource(name=name, description=description, city=city)
+		new_resource = Resource(name=name, address=address, city=city)
 		db.session.add(new_resource)
 		db.session.commit()
         
@@ -45,7 +45,7 @@ def update_resource(id):
 			return jsonify({'error': 'Resource not found'}), 404
 
 		resource.name = data.get('name', resource.name)
-		resource.description = data.get('description', resource.description)
+		resource.address = data.get('address', resource.address)
 		resource.city = data.get('city', resource.city)
 
 		db.session.commit()

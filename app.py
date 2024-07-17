@@ -140,8 +140,14 @@ def create_app():
 		user_id = session['user_id']
 		user = User.query.get(user_id)
 
+		# Debugging: Print the user's city
+		print(f"User's City: {user.city}")
+
 		# Query to find resources in the user's city
 		resources = Resource.query.filter_by(city=user.city).all()
+
+		for resource in resources:
+			print(f"Resource: {resource.name}, City: {resource.city}")
 		return render_template('my_resources.html', resources=resources)
 
 

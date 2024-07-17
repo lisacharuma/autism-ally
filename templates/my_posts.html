@@ -26,17 +26,17 @@
                         <div class="post">
                             <h5>{{ post.title }} : {{ post.date_posted.strftime('%Y-%m-%d %H:%M:%S') }}</p></h5>
                             <p>{{ post.content }}</p>
-							<button onclick="deletePost({{ post.id }})">Delete</button>
+							<button class="delete-button" onclick="deletePost({{ post.id }})">Delete</button>
 							<div class="comments">
-                        		<h4>Comments</h4>
-                        		<textarea id="comment-{{ post.id }}" placeholder="Add a comment"></textarea>
-                        		<button onclick="addComment({{ post.id }})">Comment</button>
-                        		{% for comment in post.comments %}
-                        		<div class="comment">
-                            		<p>{{ comment.user.username }}: {{ comment.content }}</p>
-                        		</div>
-                        		{% endfor %}
-                    		</div>							
+                            <h4>Comments</h4>
+                            <textarea id="comment-{{ post.id }}" class="comment-textarea" placeholder="Add a comment"></textarea>
+                            <button class="comment-button" onclick="addComment({{ post.id }})">Comment</button>
+                            {% for comment in post.comments %}
+                            <div class="comment">
+                                <p class="comment-content">{{ comment.user.username }}: {{ comment.content }}</p>
+                            </div>
+                            {% endfor %}
+                        </div>							
                         </div>
                     {% endfor %}
                 </section>

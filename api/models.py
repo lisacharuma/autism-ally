@@ -57,7 +57,7 @@ class Resource(db.Model):
 	__tablename__ = 'resource'
 	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String(150), nullable=False)
-	description = db.Column(db.String(200), nullable=True)
+	address = db.Column(db.String(200), nullable=True)
 	city = db.Column(db.String(80), nullable=False)
 	user = db.relationship('User', secondary=user_resource_association, back_populates='resource')
 

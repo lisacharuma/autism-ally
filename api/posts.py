@@ -1,7 +1,7 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, session
 from api.db import db  # Import Database setup
 from sqlalchemy.exc import SQLAlchemyError
-from .models import Post, PostSchema
+from .models import Post, PostSchema, Comment, CommentSchema, User, UserSchema
 from .blueprint import api_views
 
 
@@ -70,3 +70,38 @@ def delete_post(id):
 	except SQLAlchemyError as e:
 		db.session.rollback()
 		return jsonify({'error': str(e)}), 500
+
+
+@api_views.route('/posts/<int:post_id>/comments', methods=['POST'])
+def add_comment(post_id):
+	data = request.get_json()
+	content = data.get('content')
+
+	if not content:
+		return jsonify({'error': 'Content is required'}), 400
+
+	post = Post.query.get(post_id)
+	if not post:
+		return jsonify({'error': 'Post not found'}), 404
+
+	user_id = session.get('user_id')
+	if not user_id:
+		return jsonify({'error': 'User not logged in'}), 401
+
+	new_comment = Comment(content=content, post_id=post.id, user_id=user_id)
+
+	try:
+		db.session.add(new_comment)
+		db.session.commit()
+		return jsonify({'message': 'Comment added successfully'}), 201
+	except Exception as e:
+		db.session.rollback()
+		return jsonify({'error': str(e)}), 500
+
+
+@api_views.route('/posts/<int:post_id>/comments', methods=['GET'])
+def get_comments(post_id):
+	comments = Comment.query.filter_by(post_id=post_id).all()
+	return jsonify(comments_schema.dump(comments))
+
+

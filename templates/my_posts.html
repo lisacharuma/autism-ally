@@ -27,7 +27,16 @@
                             <h5>{{ post.title }} : {{ post.date_posted.strftime('%Y-%m-%d %H:%M:%S') }}</p></h5>
                             <p>{{ post.content }}</p>
 							<button onclick="deletePost({{ post.id }})">Delete</button>
-        					<button onclick="updatePost({{ post.id }})">Update</button>
+							<div class="comments">
+                        		<h4>Comments</h4>
+                        		<textarea id="comment-{{ post.id }}" placeholder="Add a comment"></textarea>
+                        		<button onclick="addComment({{ post.id }})">Comment</button>
+                        		{% for comment in post.comments %}
+                        		<div class="comment">
+                            		<p>{{ comment.user.username }}: {{ comment.content }}</p>
+                        		</div>
+                        		{% endfor %}
+                    		</div>							
                         </div>
                     {% endfor %}
                 </section>
@@ -49,27 +58,28 @@
             }
         });
     }
-
-    function updatePost(postId) {
-        const title = prompt('Enter new title:');
-        const content = prompt('Enter new content:');
-        fetch(`/posts/${postId}`, {
-            method: 'PUT',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ title: title, content: content })
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.error) {
-                alert(data.error);
-            } else {
-                alert('Post updated successfully');
-                location.reload();
+	
+	 async function addComment(postId) {
+            const content = document.getElementById(`comment-${postId}`).value;
+            try {
+                const response = await fetch(`/posts/${postId}/comments`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ content })
+                });
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    console.error('Failed to add comment');
+                }
+            } catch (error) {
+                console.error('Error:', error);
             }
-        });
-    }
+        }	
+
+
 </script>
 </body>
 </html>

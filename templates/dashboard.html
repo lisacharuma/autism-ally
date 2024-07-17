@@ -16,25 +16,51 @@
     </nav>
 	</header>
 	{% include 'sidebar.html' %}
-	<!--div class="sidebar"-->
-            <!--a href="/posts">Posts</a-->
-            <!--a href="/create_post">Create Post</a-->
-            <!--a href="/my_posts">My Posts</a--> 
-            <!--a href="/my_resources">My Resources</a-->
-            <!--a href="/profile">Profile</a--> 
-	<!--/div-->
     <div class="dashboard-container">
         <h1>Welcome To Your Dashboard {{ session['username'] }}!</h1>
         <div class="main-content">
 			<h2>Posts</h2>
 				{% for post in posts %}
 					<div class='post'>
-                    <h3> {{post.title }} </h3>
-                    <p>By {{post.user.username}} : {{ post.date_posted.strftime('%Y-%m-%d %H:%M:%S') }}</p>
-                    <p>{{post.content }} </p>
+                    	<h3> {{post.title }} </h3>
+                    	<p>By {{post.user.username}} : {{ post.date_posted.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                    	<p>{{post.content }} </p>
+						<div class="comments">
+                        	<h4>Comments</h4>
+                        	<textarea id="comment-{{ post.id }}" placeholder="Add a comment"></textarea>
+                        	<button onclick="addComment({{ post.id }})">Comment</button>
+                        	{% for comment in post.comments %}
+                        	<div class="comment">
+                            	<p>{{ comment.user.username }}: {{ comment.content }}</p>
+                        	</div>
+                        	{% endfor %}
+                    	</div>
 					</div>
                 {% endfor %}
         </div>
     </div>
+	<script>
+		async function addComment(postId) {
+			const content = document.getElementById(`comment-${postId}`).value;
+            try {
+                const response = await fetch(`/posts/${postId}/comments`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ content })
+                });
+                if (response.ok) {
+                    location.reload();
+                } else {
+                    console.error('Failed to add comment');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+        }
+
+
+	</script>
 </body>
 </html>

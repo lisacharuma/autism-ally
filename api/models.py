@@ -36,6 +36,21 @@ class Post(db.Model):
 
 	user = db.relationship('User', back_populates='posts')
 
+#Comment Model
+class Comment(db.Model):
+	id = db.Column(db.Integer, primary_key=True)
+	content = db.Column(db.Text, nullable=False)
+	date_posted = db.Column(db.DateTime, nullable=False, default=datetime.utcnow)
+	post_id = db.Column(db.Integer, db.ForeignKey('post.id'), nullable=False)
+	user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+
+	post = db.relationship('Post', back_populates='comments')
+	user = db.relationship('User', back_populates='comments')
+
+Post.comments = db.relationship('Comment', order_by=Comment.date_posted, back_populates='post')
+User.comments = db.relationship('Comment', back_populates='user')
+
+
 
 #Resource Model
 class Resource(db.Model):
@@ -56,6 +71,10 @@ class PostSchema(ma.SQLAlchemyAutoSchema):
 	class Meta:
 		model = Post
 	date_posted = ma.auto_field()
+
+class CommentSchema(ma.SQLAlchemyAutoSchema):
+	class Meta:
+		model = Comment
 
 class ResourceSchema(ma.SQLAlchemyAutoSchema):
 	class Meta:

@@ -28,8 +28,10 @@ cd autism-ally
 2. Install Dependencies
 npm install
 
-3. Run the Development server
+4. Run the Development server
 npm run dev
 
-4. Open http://localhost:5000 in your server
+5. Open http://localhost:5000 in your server
 
+Contribution Guidelines
+If you'd like to contribute to Autism Ally, feel free to submit a pull request. For major changes, please open an issue first to discuss the proposed changes.

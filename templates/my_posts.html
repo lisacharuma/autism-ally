@@ -1,85 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Posts - Autism Ally</title>
-	<link rel="icon" type="Image/png" href="/static/images/aut.png" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
-</head>
-<body>
-    <header>
-        <nav>
-            <ul>
-                <li><a href="/">Home</a></li>
-                <li><a href="/logout">Logout</a></li>
-            </ul>
-        </nav>
-    </header>
-    <div class="container">
-        {% include 'sidebar.html' %}
-        <div class="dashboard-container">
-            <h1>My Posts</h1>
-            <div class="main-content">
-                <section id="posts">
-                    {% for post in posts %}
-                        <div class="post">
-                            <h5>{{ post.title }} : {{ post.date_posted.strftime('%Y-%m-%d %H:%M:%S') }}</p></h5>
-                            <p>{{ post.content }}</p>
-							<button class="delete-button" onclick="deletePost({{ post.id }})">Delete</button>
-							<div class="comments">
-                            <h4>Comments</h4>
-                            <textarea id="comment-{{ post.id }}" class="comment-textarea" placeholder="Add a comment"></textarea>
-                            <button class="comment-button" onclick="addComment({{ post.id }})">Comment</button>
-                            {% for comment in post.comments %}
-                            <div class="comment">
-                                <p class="comment-content">{{ comment.user.username }}: {{ comment.content }}</p>
-                            </div>
-                            {% endfor %}
-                        </div>							
-                        </div>
+{% extends "base.html" %}
+
+{% block title %}My Posts{% endblock %}
+
+{% block content %}
+<h1>My Posts</h1>
+<div class="main-content">
+    <section id="posts">
+        {% for post in posts %}
+        <div class="post">
+            <h5>{{ post.title }} : {{ post.date_posted.strftime('%Y-%m-%d %H:%M:%S') }}</h5>
+            <p>{{ post.content }}</p>
+            <button class="delete-button" onclick="deletePost({{ post.id }})">Delete</button>
+            <div class="comments-section">
+                <button class="toggle-comments">Comments</button>
+                <div class="comments" style="display: none;">
+                    {% for comment in post.comments %}
+                    <div class="comment">
+                        <p class="comment-content">{{ comment.user.username }}: {{ comment.content }}</p>
+                    </div>
                     {% endfor %}
-                </section>
+                    <textarea id="comment-{{ post.id }}" class="comment-textarea" placeholder="Add a comment"></textarea>
+                    <button class="comment-button" onclick="addComment({{ post.id }})">Comment</button>
+                </div>
             </div>
         </div>
-    </div>
-	<script>
-    function deletePost(postId) {
-        fetch(`/posts/${postId}`, {
-            method: 'DELETE'
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.error) {
-                alert(data.error);
-            } else {
-                alert('Post deleted successfully');
-                location.reload();
-            }
-        });
-    }
-	
-	 async function addComment(postId) {
-            const content = document.getElementById(`comment-${postId}`).value;
-            try {
-                const response = await fetch(`/posts/${postId}/comments`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ content })
-                });
-                if (response.ok) {
-                    location.reload();
-                } else {
-                    console.error('Failed to add comment');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        }	
+        {% endfor %}
+    </section>
+</div>
+{% endblock %}
 
-
-</script>
-</body>
-</html>

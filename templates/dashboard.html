@@ -1,66 +1,31 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Dashboard</title>
-    <link rel="icon" type="Image/png" href="/static/images/aut.png" />
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
-</head>
-<body>
-	<header>
-    <nav>
-		<ul>
-        	<li> <a href="/">Home</a> </li>
-        	<li> <a href="/logout">Logout</a> </li>
-		</ul>
-    </nav>
-	</header>
-	{% include 'sidebar.html' %}
-    <div class="dashboard-container">
-        <h1>Welcome To Your Dashboard {{ session['username'] }}!</h1>
-        <div class="main-content">
-			<h2>Posts</h2>
-				{% for post in posts %}
-					<div class='post'>
-                    	<h3> {{post.title }} </h3>
-                    	<p>{{post.user.username}} : {{ post.date_posted.strftime('%Y-%m-%d %H:%M:%S') }}</p>
-                    	<p>{{post.content }} </p>
-						<div class="comments">
-                        	<h4>Comments</h4>
-                        	<textarea id="comment-{{ post.id }}" class="comment-textarea" placeholder="Add a comment"></textarea>
-                        	<button class="comment-button" onclick="addComment({{ post.id }})">Comment</button>
-                        	{% for comment in post.comments %}
-                        	<div class="comment">
-                            	<p class="comment-content">{{ comment.user.username }}: {{ comment.content }}</p>
-                        	</div>
-                        	{% endfor %}
-                    	</div>
-					</div>
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<h1>Welcome To Your Dashboard {{ session['username'] }}!</h1>
+<div class="main-content">
+    <h2>Posts</h2>
+    {% for post in posts %}
+    <div class='post'>
+        <h3>{{ post.user.username }}</h3>
+        <p>{{ post.date_posted.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+        <p>{{ post.title }}</p>
+        <p>{{ post.content }}</p>
+        <div class="comments-section">
+            <button class="toggle-comments">Comments</button>
+            <div class="comments" style="display: none;">
+                {% for comment in post.comments %}
+                <div class="comment">
+                    <p class="comment-content">{{ comment.user.username }}: {{ comment.content }}</p>
+                </div>
                 {% endfor %}
+                <textarea id="comment-{{ post.id }}" class="comment-textarea" placeholder="Add a comment"></textarea>
+                <button class="comment-button" onclick="addComment({{ post.id }})">Comment</button>
+            </div>
         </div>
     </div>
-	<script>
-		async function addComment(postId) {
-			const content = document.getElementById(`comment-${postId}`).value;
-            try {
-                const response = await fetch(`/posts/${postId}/comments`, {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ content })
-                });
-                if (response.ok) {
-                    location.reload();
-                } else {
-                    console.error('Failed to add comment');
-                }
-            } catch (error) {
-                console.error('Error:', error);
-            }
-        }
+    {% endfor %}
+</div>
+{% endblock %}
 
-
-	</script>
-</body>
-</html>

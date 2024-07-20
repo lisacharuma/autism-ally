@@ -163,12 +163,15 @@ def create_app():
 		"""
 		if 'user_id' not in session:
 			return redirect(url_for('login'))
-		user_posts = Post.query.filter_by(user_id=session['user_id']).order_by(Post.date_posted.desc()).all()
+
+		user_id = session['user_id']
+		user = User.query.get(user_id)
+		user_posts = Post.query.filter_by(user_id = session['user_id']).order_by(Post.date_posted.desc()).all()
 
 		#Order comments in descending order
 		for post in user_posts:
 			post.comments = Comment.query.filter_by(post_id=post.id).order_by(Comment.date_posted.desc()).all()
-		return render_template('my_posts.html', posts=user_posts)
+		return render_template('my_posts.html', user=user, posts=user_posts)
 
 
 	@app.route('/my_resources')

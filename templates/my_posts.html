@@ -8,14 +8,20 @@
     <section id="posts">
         {% for post in posts %}
         <div class="post">
-            <h5>{{ post.title }} : {{ post.date_posted.strftime('%Y-%m-%d %H:%M:%S') }}</h5>
-            <p>{{ post.content }}</p>
-            <button class="delete-button" onclick="deletePost({{ post.id }})">Delete</button>
+			<div class = "post-header">
+				<img class="rounded-circle" src="{{ url_for('static', filename='profile_pics/' + user.image_file) if user.image_file != 'default.jpg' else url_for('static', filename='images/default.jpg') }}" alt="Profile Picture">
+				<div class="post-details">
+            		<h5>{{ post.title }} : {{ post.date_posted.strftime('%Y-%m-%d %H:%M') }}</h5>
+            		<p>{{ post.content }}</p>
+				</div>
+			</div>
+			<button class="delete-button" onclick="deletePost({{ post.id }})">Delete</button>
             <div class="comments-section">
                 <button class="toggle-comments">Comments</button>
                 <div class="comments" style="display: none;">
                     {% for comment in post.comments %}
                     <div class="comment">
+						<img class="comment-profile-pic" src="{{ url_for('static', filename='profile_pics/' + user.image_file) if user.image_file != 'default.jpg' else url_for('static', filename='images/default.jpg') }}">
                         <p class="comment-content">{{ comment.user.username }}: {{ comment.content }}</p>
                     </div>
                     {% endfor %}

@@ -8,17 +8,21 @@ from .blueprint import api_views
 
 bcrypt = Bcrypt()
 
-"""Get all recorded users"""
 @api_views.route("/users", methods=["GET"], strict_slashes=False)
 def get_users():
+	"""
+	returns all recorded users
+	"""
 	users = User.query.all()
 	user_schema = UserSchema(many=True)
 	return jsonify(user_schema.dump(users))
 
 
-"""Get a single user"""
 @api_views.route("/users/<int:user_id>", methods=["GET"], strict_slashes=False)
 def get_user(user_id):
+	"""
+	Get a single user
+	"""
 	user = User.query.get(user_id)
 	if user:
 		user_schema = UserSchema()
@@ -27,9 +31,11 @@ def get_user(user_id):
 		return jsonify({"error": "User not found"}), 404
 
 
-"""Create a new user"""
 @api_views.route("/signup", methods=["POST"], strict_slashes=False)
 def create_user():
+	"""
+	creates a new user
+	"""
 	data = request.json
 	if 'username' not in data or 'email' not in data:
 		return jsonify({"error": "Missing username or email"}), 400
@@ -54,9 +60,11 @@ def create_user():
 	return jsonify({'success': True, 'user_id': new_user.id}), 201
 
 
-"""Login existingUser"""
 @api_views.route("/login", methods=["POST"], strict_slashes=False)
 def login_user():
+	"""
+	login existing user
+	"""
 	data = request.json
 	print(data)
 
@@ -74,10 +82,11 @@ def login_user():
 	return jsonify(success=False, message='Invalid credentials')
 
 
-
-"""Update an existing user"""
-@api_views.route("/users/<int:user_id>", methods=["PUT"], strict_slashes=False)
+@api_views.route("/users/<int:user_id>", methods=["GET", "PUT"], strict_slashes=False)
 def update_user(user_id):
+	"""
+	updates an existing user
+	"""
 	user = User.query.get(user_id)
 	if not user: # user doesn't exist, exit gracefully
 		return jsonify({"error": "User not found"}), 404
@@ -107,12 +116,14 @@ def update_user(user_id):
 	return jsonify(user_schema.dump(user))
 
 
-"""Delete an existing user"""
 @api_views.route("/users/<int:user_id>", methods=["DELETE"], strict_slashes=False)
 def delete_user(user_id):
-    user = User.query.get(user_id)
-    if not user: # user doesn't exist, exit gracefully
-        return jsonify({"error": "User not found"}), 404
-    db.session.delete(user)
-    db.session.commit()
-    return jsonify({"message": "User deleted successfully"})
+	"""
+	deletes a user 
+	"""
+	user = User.query.get(user_id)
+	if not user: # user doesn't exist, exit gracefully
+		return jsonify({"error": "User not found"}), 404
+	db.session.delete(user)
+	db.session.commit()
+	return jsonify({"message": "User deleted successfully"})

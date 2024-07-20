@@ -11,6 +11,9 @@ resources_schema = ResourceSchema(many=True)
 
 @api_views.route('/resources', methods=['GET'])
 def show_resources():
+	"""
+	returns all resources
+	"""
 	try:
 		resources = Resource.query.all()
 		return jsonify(resources_schema.dump(resources))
@@ -20,6 +23,9 @@ def show_resources():
 
 @api_views.route('/resources', methods=['POST'])
 def create_resource():
+	"""
+	creates a new resource
+	"""
 	try:
 		data = request.get_json()
 		name = data.get('name')
@@ -36,8 +42,11 @@ def create_resource():
 		return jsonify({'error': str(e)}), 500
 
 
-@api_views.route('/resources/<int:id>', methods=['PUT'])
+@api_views.route('/resources/<int:id>', methods=['GET', 'PUT'])
 def update_resource(id):
+	"""
+	updates an existing resource
+	"""
 	try:
 		data = request.get_json()
 		resource = Resource.query.get(id)
@@ -58,6 +67,9 @@ def update_resource(id):
 
 @api_views.route('/resources/<int:id>', methods=['DELETE'])
 def delete_resource(id):
+	"""
+	deletes a resource
+	"""
 	try:
 		resource = Resource.query.get(id)
 		if not resource:

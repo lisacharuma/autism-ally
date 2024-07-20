@@ -38,40 +38,64 @@ def create_app():
 
 	
 	def allowed_file(filename):
+		"""
+		Defines files allowed to be uploaded
+		"""
 		return '.' in filename and \
 			filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
 
 
 	@app.route('/')
 	def home():
+		"""
+		app home page
+		"""
 		return render_template("index.html")
 
 	@app.route('/about')
 	def about():
+		"""
+		about page
+		"""
 		return render_template("about.html")
 
 	@app.route('/information')
 	def information():
+		"""
+		Information section
+		"""
 		return render_template("information.html")
 
 	@app.route('/stories')
 	def stories():
+		"""
+		Stories of well known figures with autism
+		"""
 		return render_template("stories.html")
 
 
 	#Only renders template. Logic is in api/users.py
 	@app.route('/signup', methods=['GET', 'POST'])
 	def signup():
+		"""
+		sign up page
+		"""
 		return render_template('signup.html', action='Sign Up', url=url_for('api_views.create_user'))
 
 
 	@app.route('/login', methods=['GET','POST'])
 	def login():
+		"""
+		login page
+		"""
 		return render_template('login.html', action='Login', url=url_for('api_views.login_user'))
 
 
 	@app.route('/dashboard')
 	def dashboard():
+		"""
+		renders dashboard page
+		"""
 		user_id = session.get('user_id')  # Get the user_id from the session
 		username = session.get('username')
 		email = session.get('email')
@@ -80,21 +104,31 @@ def create_app():
 			return redirect(url_for('login'))
 
 		user = User.query.get(user_id)
-		all_posts = Post.query.all()
 		if not user:
 			return redirect(url_for('login'))
 
+		all_posts = Post.query.order_by(Post.date_posted.desc()).all()
+		for post in all_posts:
+			post.comments = Comment.query.filter_by(post_id=post.id).order_by(Comment.date_posted.desc()).all()
+		
 		# Pass user_id to the template
 		return render_template("dashboard.html", user=user, posts=all_posts)
 
 
 	@app.route('/logout')
 	def logout():
+		"""
+		logs out user
+		"""
 		session.clear()
 		return redirect(url_for('home'))
 
+
 	@app.route('/profile')
 	def profile():
+		"""
+		user profile page
+		"""
 		if 'user_id' not in session:
 			return redirect(url_for('login'))
 
@@ -104,8 +138,12 @@ def create_app():
 
 		return render_template('profile.html', user=user)
 
+
 	@app.route('/create_post', methods=['GET', 'POST'])
 	def create_post():
+		"""
+		creates new post on user dashboard
+		"""
 		if 'user_id' not in session:
 			return redirect(url_for('login'))
 		if request.method == 'POST':
@@ -118,30 +156,31 @@ def create_app():
 		return render_template('create_post.html')
 
 
-	@app.route('/posts')
-	def posts():
-		all_posts = Post.query.all()
-		return render_template('dashboard.html', posts=all_posts)
-
-
 	@app.route('/my_posts')
 	def my_posts():
+		"""
+		gets logged in user's posts
+		"""
 		if 'user_id' not in session:
 			return redirect(url_for('login'))
-		user_posts = Post.query.filter_by(user_id=session['user_id']).all()
+		user_posts = Post.query.filter_by(user_id=session['user_id']).order_by(Post.date_posted.desc()).all()
+
+		#Order comments in descending order
+		for post in user_posts:
+			post.comments = Comment.query.filter_by(post_id=post.id).order_by(Comment.date_posted.desc()).all()
 		return render_template('my_posts.html', posts=user_posts)
 
 
 	@app.route('/my_resources')
 	def my_resources():
+		"""
+		returns autism help centers near user
+		"""
 		if "user_id" not in session:
 			return redirect(url_for('login'))
 
 		user_id = session['user_id']
 		user = User.query.get(user_id)
-
-		# Debugging: Print the user's city
-		print(f"User's City: {user.city}")
 
 		# Query to find resources in the user's city
 		resources = Resource.query.filter_by(city=user.city).all()
@@ -153,6 +192,9 @@ def create_app():
 
 	@app.route('/profile/update', methods=['GET','POST'])
 	def update_profile():
+		"""
+		updates loged in user's profile
+		"""
 		return render_template('update_user.html', action='Update Profile', url=url_for('api_views.update_user', user_id=session['user_id']))
 
 

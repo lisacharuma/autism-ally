@@ -12,6 +12,9 @@ posts_schema = PostSchema(many=True)
 
 @api_views.route('/posts', methods=['GET'])
 def show_posts():
+	"""
+	returns all posts
+	"""
 	try:
 		posts = Post.query.all()
 		return jsonify(posts_schema.dump(posts))
@@ -21,6 +24,9 @@ def show_posts():
 
 @api_views.route('/posts', methods=['POST'])
 def create_post():
+	"""
+	creates a new post
+	"""
 	try:
 		data = request.get_json()
 		title = data.get('title')
@@ -37,8 +43,11 @@ def create_post():
 		return jsonify({'error': str(e)}), 500
 
 
-@api_views.route('/posts/<int:id>', methods=['PUT'])
+@api_views.route('/posts/<int:id>', methods=['GET','PUT'])
 def update_post(id):
+	"""
+	updates an existing post
+	"""
 	try:
 		data = request.get_json()
 		post = Post.query.get(id)
@@ -58,6 +67,9 @@ def update_post(id):
 
 @api_views.route('/posts/<int:id>', methods=['DELETE'])
 def delete_post(id):
+	"""
+	deletes an existing post
+	"""
 	try:
 		post = Post.query.get(id)
 		if not post:
@@ -74,6 +86,9 @@ def delete_post(id):
 
 @api_views.route('/posts/<int:post_id>/comments', methods=['POST'])
 def add_comment(post_id):
+	"""
+	adds comment to a post
+	"""
 	data = request.get_json()
 	content = data.get('content')
 
@@ -101,7 +116,8 @@ def add_comment(post_id):
 
 @api_views.route('/posts/<int:post_id>/comments', methods=['GET'])
 def get_comments(post_id):
-	comments = Comment.query.filter_by(post_id=post_id).all()
+	"""
+	Returns all posts sorted by descending order
+	"""
+	comments = Comment.query.filter_by(post_id=post_id).order_by(Comment.date_posted.desc()).all()
 	return jsonify(comments_schema.dump(comments))
-
-

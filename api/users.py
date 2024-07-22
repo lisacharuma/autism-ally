@@ -107,16 +107,17 @@ def update_user(user_id):
 	if 'city' in data:
 		user.city = data['city']
 
-	if 'image_file' in request.files:
-		file = request.files['image_file']
-		if file and allowed_file(file.filename):
-			filename = secure_filename(file.filename)
-			file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-			try:
-				file.save(file_path)
-				user.image_file = filename
-			except Exception as e:
-				return jsonify({"error":  f"failed to save file: {str(e)}"}), 500
+	#temporarily removing this
+	#if 'image_file' in request.files:
+	#	file = request.files['image_file']
+	#	if file and allowed_file(file.filename):
+	#		filename = secure_filename(file.filename)
+	#		file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+	#		try:
+	#			file.save(file_path)
+	#			user.image_file = filename
+	#		except Exception as e:
+	#			return jsonify({"error":  f"failed to save file: {str(e)}"}), 500
 
 	db.session.commit()
 	user_schema = UserSchema()

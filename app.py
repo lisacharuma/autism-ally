@@ -1,4 +1,5 @@
 from flask import Flask, render_template, request, session, redirect, url_for, jsonify
+from flask_login import LoginManager, login_required, logout_user, current_user
 from flask_bcrypt import Bcrypt  # Import bcrypt for pswd hashing
 from api.blueprint import api_views
 from api.db import db        #imports the database setup
@@ -13,6 +14,8 @@ def create_app():
 	app=Flask(__name__)
 	app.secret_key = "AutismAlly"
 
+	login_manager = LoginManager(app)
+	login_manager.login_view = 'login'
 
 	"""Database configuration"""
 	basedir = os.path.abspath(os.path.dirname(__file__))
@@ -45,12 +48,21 @@ def create_app():
 		os.makedirs(upload_folder)
 
 
+	@login_manager.user_loader
+	def load_user(user_id):
+		"""
+		loads current user
+		"""
+		return User.query.get(int(user_id))
+
+
 	@app.route('/')
 	def home():
 		"""
 		app home page
 		"""
 		return render_template("index.html")
+
 
 	@app.route('/about')
 	def about():
@@ -59,12 +71,14 @@ def create_app():
 		"""
 		return render_template("about.html")
 
+
 	@app.route('/information')
 	def information():
 		"""
 		Information section
 		"""
 		return render_template("information.html")
+
 
 	@app.route('/stories')
 	def stories():
@@ -88,10 +102,11 @@ def create_app():
 		"""
 		login page
 		"""
-		return render_template('login.html', action='Login', url=url_for('api_views.login_user'))
+		return render_template('login.html', action='Login', url=url_for('api_views.user_login'))
 
 
 	@app.route('/dashboard')
+	@login_required
 	def dashboard():
 		"""
 		renders dashboard page
@@ -116,15 +131,17 @@ def create_app():
 
 
 	@app.route('/logout')
+	@login_required
 	def logout():
 		"""
 		logs out user
 		"""
-		session.clear()
-		return redirect(url_for('home'))
+		logout_user()
+		return redirect(url_for('login'))
 
 
 	@app.route('/profile')
+	@login_required
 	def profile():
 		"""
 		user profile page
@@ -140,6 +157,7 @@ def create_app():
 
 
 	@app.route('/create_post', methods=['GET', 'POST'])
+	@login_required
 	def create_post():
 		"""
 		creates new post on user dashboard
@@ -157,6 +175,7 @@ def create_app():
 
 
 	@app.route('/my_posts')
+	@login_required
 	def my_posts():
 		"""
 		gets logged in user's posts
@@ -175,6 +194,7 @@ def create_app():
 
 
 	@app.route('/my_resources')
+	@login_required
 	def my_resources():
 		"""
 		returns autism help centers near user
@@ -192,8 +212,9 @@ def create_app():
 			print(f"Resource: {resource.name}, City: {resource.city}")
 		return render_template('my_resources.html', resources=resources)
 
-
+	
 	@app.route('/profile/update', methods=['GET','POST'])
+	@login_required
 	def update_profile():
 		"""
 		updates loged in user's profile

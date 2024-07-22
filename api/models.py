@@ -1,8 +1,10 @@
+from flask import current_app as app
 from .db import db
 from flask_marshmallow import Marshmallow
 from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 ma = Marshmallow()
 from datetime import datetime
+from flask_login import LoginManager, UserMixin
 
 
 user_resource_association = db.Table('user_resource_association',
@@ -11,7 +13,7 @@ user_resource_association = db.Table('user_resource_association',
 )
 
 # User Model
-class User(db.Model):
+class User(db.Model, UserMixin):
 	__tablename__ = 'user'
 	id = db.Column(db.Integer, primary_key=True)
 	username = db.Column(db.String(150), nullable=False, unique=True)
@@ -24,7 +26,7 @@ class User(db.Model):
 
 	def __repr__(self):
 		return f"User('{self.username}', '{self.email}', '{self.image_file}')"
-
+	
 
 #Post Model
 class Post(db.Model):

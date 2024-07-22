@@ -1,4 +1,5 @@
 from flask import redirect, request, jsonify, session, url_for, current_app as app
+from flask_login import login_user
 from api.db import db  # Import Database setup
 from flask_bcrypt import Bcrypt #for paswd hashing
 from werkzeug.utils import secure_filename  # validates filenames before saving them to the filesystem
@@ -62,7 +63,7 @@ def create_user():
 
 
 @api_views.route("/login", methods=["POST"], strict_slashes=False)
-def login_user():
+def user_login():
 	"""
 	login existing user
 	"""
@@ -78,7 +79,8 @@ def login_user():
 	user = User.query.filter_by(username=username).first()
 	if user and bcrypt.check_password_hash(user.password, password):
 		#user_schema = UserSchema()
-		session['user_id'] = user.id
+		#session['user_id'] = user.id
+		login_user(user)
 		return jsonify(success=True), 200
 	return jsonify(success=False, message='Invalid credentials')
 

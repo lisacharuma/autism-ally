@@ -5,8 +5,8 @@ from api.db import db        #imports the database setup
 from api.models import ma
 from flask_cors import CORS  # Import the CORS module
 import os
-from api.models import User, Resource, Post, Comment, user_resource_association
-
+from api.models import User, UserSchema, Resource, Post, Comment, user_resource_association
+from api.utils import *
 
 # the application factory
 def create_app():
@@ -36,13 +36,13 @@ def create_app():
 	"""Initialize bcrypt"""
 	bcrypt = Bcrypt(app)
 
-	
-	def allowed_file(filename):
-		"""
-		Defines files allowed to be uploaded
-		"""
-		return '.' in filename and \
-			filename.rsplit('.', 1)[1].lower() in app.config['ALLOWED_EXTENSIONS']
+	#Set the path to the images folder relative to the project dir
+	project_root = os.path.dirname(os.path.abspath(__file__))
+	upload_folder = os.path.join(project_root, 'images')
+	app.config['UPLOAD_FOLDER']=upload_folder
+
+	if not os.path.exists(upload_folder):
+		os.makedirs(upload_folder)
 
 
 	@app.route('/')
@@ -198,7 +198,13 @@ def create_app():
 		"""
 		updates loged in user's profile
 		"""
-		return render_template('update_user.html', action='Update Profile', url=url_for('api_views.update_user', user_id=session['user_id']))
+		if "user_id" not in session:
+			return redirect(url_for('login'))
+		user_id = session['user_id']
+		user = User.query.get(user_id)
+		if request.method == 'POST':
+			return render_template('update_user.html', url=url_for('api_views.update_user', user_id=user_id))
+		return render_template('update_user.html', action='Update Profile', url=url_for('api_views.update_user', user_id=user_id))
 
 
 

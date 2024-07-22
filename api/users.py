@@ -1,10 +1,11 @@
-from flask import redirect, request, jsonify, session, url_for
+from flask import redirect, request, jsonify, session, url_for, current_app as app
 from api.db import db  # Import Database setup
 from flask_bcrypt import Bcrypt #for paswd hashing
 from werkzeug.utils import secure_filename  # validates filenames before saving them to the filesystem
 import os
 from .models import UserSchema, User
 from .blueprint import api_views
+from .utils import allowed_file  # Import the allowed_file function
 
 bcrypt = Bcrypt()
 
@@ -82,7 +83,7 @@ def login_user():
 	return jsonify(success=False, message='Invalid credentials')
 
 
-@api_views.route("/users/<int:user_id>", methods=["GET", "PUT"], strict_slashes=False)
+@api_views.route("/users/<int:user_id>", methods=["POST", "PUT"], strict_slashes=False)
 def update_user(user_id):
 	"""
 	updates an existing user
@@ -105,11 +106,15 @@ def update_user(user_id):
 		user.city = data['city']
 
 	if 'image_file' in request.files:
-		file = request.files['image_files']
+		file = request.files['image_file']
 		if file and allowed_file(file.filename):
 			filename = secure_filename(file.filename)
-			file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
-			user.image_file = filename
+			file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+			try:
+				file.save(file_path)
+				user.image_file = filename
+			except Exception as e:
+				return jsonify({"error":  f"failed to save file: {str(e)}"}), 500
 
 	db.session.commit()
 	user_schema = UserSchema()

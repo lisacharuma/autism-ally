@@ -84,7 +84,7 @@ nav ul li a {
     </header>
     <main class="auth-container">
         <h1>{{ action }}</h1>
-        <form id="updateForm" enctype="multipart/form-data">
+        <form id="updateForm" action="{{ url }}" method="post" enctype="multipart/form-data">
             <label for="username">Username</label>
             <input type="text" id="username" name="username" required>
             <label for="email">Email</label>

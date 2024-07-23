@@ -1,0 +1,125 @@
+/* about.css */
+
+/* Global Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0;
+    background-color: #f9f9f9;
+}
+
+header {
+    background-color: #4c9b9f;
+    padding: 10px 20px;
+}
+
+nav ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+nav ul li {
+    margin: 0 15px;
+}
+
+nav ul li a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+nav ul li a:hover {
+    color: #2f6b6f;
+}
+
+.about-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+h1 {
+    text-align: center;
+    color: #2f6b6f;
+    margin-bottom: 40px;
+}
+
+.about {
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 30px;
+    padding: 20px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+}
+
+.about-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+}
+
+.about-content .text {
+    flex: 1;
+    min-width: 300px;
+    margin-right: 20px;
+    order: 1;
+}
+
+.about-content .image {
+    flex: 1;
+    min-width: 300px;
+    text-align: center;
+    order: 2;
+}
+
+.about-content:nth-child(even) .text {
+    order: 2;
+}
+
+.about-content:nth-child(even) .image {
+    order: 1;
+}
+
+.about-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+h2 {
+    color: #4c9b9f;
+    margin-bottom: 10px;
+}
+
+p, ul {
+    color: #333;
+}
+
+ul {
+    padding-left: 20px;
+}
+
+li {
+    margin-bottom: 10px;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+    .about-content {
+        flex-direction: column;
+    }
+    
+    .about-content .text,
+    .about-content .image {
+        margin-right: 0;
+    }
+}

@@ -10,7 +10,7 @@ body {
 }
 
 header {
-    background-color: #4c9b9f;
+    background-color: #4CAF50;
     padding: 10px 20px;
 }
 
@@ -45,7 +45,7 @@ nav ul li a:hover {
 
 h1 {
     text-align: center;
-    color: #2f6b6f;
+    color: #4CAF50;
     margin-bottom: 40px;
 }
 
@@ -96,7 +96,7 @@ h1 {
 }
 
 h2 {
-    color: #4c9b9f;
+    color: #4CAF50;
     margin-bottom: 10px;
 }
 

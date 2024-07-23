@@ -1,31 +1,60 @@
+/* Global Styles */
 body {
-	font-family: Arial, sans-serif;
-	margin: 0;
-	padding: 0;
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    background-color: #f9f9f9;
+    margin: 0;
+    padding: 0;
 }
 
+/* Header and Navigation Styles */
 header {
-	position: sticky;
+    position: sticky;
     top: 0;
-    background-color: #4CAF50;
-    padding: 10px 0;
+    background-color:  #4CAF50; /* Green background */
+    padding: 10px 20px;
     z-index: 1000;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Add a subtle shadow for depth */
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 nav ul {
-	list-style: none;
-	padding: 0;
-	margin: 0;
-	display: flex;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 nav ul li {
-	margin: 0 1rem;
+    margin: 0 1.5rem;
+    position: relative; /* For dropdown positioning */
 }
 
 nav ul li a {
-	color: white;
-	text-decoration: none;
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 1.1rem; /* Larger text */
+    padding: 10px 15px; /* Add padding for larger clickable area */
+    transition: color 0.3s;
+}
+
+nav ul li a:hover {
+    color: #e0e0e0; /* Slightly lighter color on hover */
+    background-color: rgba(255, 255, 255, 0.1); /* Add background on hover */
+    border-radius: 5px; /* Rounded corners on hover */
+}
+
+/* Dropdown Styles */
+nav ul li.dropdown {
+    cursor: pointer;
 }
 
 /* Hero section styling */
@@ -64,38 +93,92 @@ nav ul li a {
 #about {
     display: flex;
     align-items: center;
-    padding: 20px;
+    padding: 60px 20px; /* Add more padding for better spacing */
+    background-color: #f9f9f9; /* Light background color for contrast */
 }
 
 .about-content {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    max-width: 1200px; /* Limit the width for better readability */
+    margin: 0 auto; /* Center the content */
+    flex-wrap: wrap; /* Allow content to wrap on smaller screens */
 }
 
 .about-content .text {
     flex: 1;
     padding-right: 20px;
+    padding-left: 20px;
+    text-align: left;
+}
+
+.about-content .text h2 {
+    font-size: 2rem;
+    margin-bottom: 20px;
+    color: #4CAF50; /* Darker text color for better readability */
+}
+
+.about-content .text p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: #666; /* Slightly darker than light gray */
+}
+
+.about-content .text a {
+    display: inline-block;
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #4CAF50; /* Consistent with header color */
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.about-content .text a:hover {
+    background-color: #45a049; /* Slightly darker green on hover */
 }
 
 .about-content .image {
     flex: 1;
     text-align: right;
+    padding-left: 20px;
+    padding-right: 20px;
 }
 
 .about-content .image img {
     max-width: 100%;
     height: auto;
     border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add subtle shadow for depth */
 }
 
+/* General section styles */
 section {
-	padding: 4rem 2rem;
-	text-align: center;
+    padding: 4rem 2rem;
+    text-align: center;
 }
 
 section h2 {
-	margin-bottom: 2rem;
+    margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+    .about-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .about-content .text, .about-content .image {
+        padding: 0;
+    }
+    
+    .about-content .text {
+        order: 2; /* Place text below the image on smaller screens */
+        margin-top: 20px;
+    }
 }
 
 /* Features Section */
@@ -105,16 +188,22 @@ section h2 {
     align-items: center;
     flex-wrap: wrap;
     padding: 50px 0;
+    background-color: #f4f4f4; /* Light background color */
 }
 
 .feature {
-    width: 20%;
-    height: 300px;
+    width: calc(25% - 20px); /* Adjust width for responsive design */
     margin-bottom: 20px;
     position: relative;
     overflow: hidden;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Animation for hover effect */
+}
+
+.feature:hover {
+    transform: translateY(-10px); /* Lift effect on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
 }
 
 .feature .feature-background {
@@ -126,45 +215,77 @@ section h2 {
     top: 0;
     left: 0;
     z-index: -1;
+    transition: opacity 0.3s ease; /* Smooth transition for background */
+}
+
+.feature:hover .feature-background {
+    opacity: 0.8; /* Slightly dim the background on hover */
 }
 
 .feature#info .feature-background {
-    background-color: white;
+    background-color: #e0f7fa; /* Soft cyan for Information */
 }
 
 .feature#resources .feature-background {
-    background-color: yellow;
+    background-color: #ffecb3; /* Light yellow for Resources */
 }
 
 .feature#community .feature-background {
-    background-color: blue;
+    background-color: #d1c4e9; /* Lavender for Community Support */
 }
 
 .feature#stories .feature-background {
-    background-color: red;
+    background-color: #ffccbc; /* Light coral for Success Stories */
 }
 
 .feature .feature-content {
     padding: 20px;
-    color: black;
+    color: #333; /* Dark text for better contrast */
     position: relative;
     z-index: 1;
+    text-align: center; /* Center-align text for uniformity */
 }
 
 .feature h3 {
-    font-size: 24px;
+    font-size: 1.8rem;
     margin-bottom: 10px;
+    color: #333; /* Ensure headings are dark for readability */
 }
 
 .feature p {
-    font-size: 16px;
+    font-size: 1rem;
     line-height: 1.6;
+    margin-bottom: 10px;
+    color: #555; /* Softer color for paragraph text */
 }
 
-.stories-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-	gap: 2rem;
+.feature a {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 16px;
+    background-color: #4CAF50; /* Consistent green button color */
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.feature a:hover {
+    background-color: #45a049; /* Darker green on hover */
+}
+
+@media (max-width: 768px) {
+    .feature {
+        width: calc(50% - 20px); /* Adjust width for smaller screens */
+    }
+}
+
+@media (max-width: 480px) {
+    .feature {
+        width: 100%; /* Full width for mobile */
+        margin-bottom: 20px;
+    }
 }
 
 footer {

@@ -27,10 +27,10 @@ https://github.com/lisacharuma/autism-ally.git
 cd autism-ally
 
 2. Install Dependencies
-npm install
+pip install -r requirements.txt
 
 4. Run the Development server
-npm run dev
+python3 app.py
 
 5. Open http://localhost:5000 in your server
 

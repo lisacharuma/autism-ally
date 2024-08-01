@@ -1,6 +1,6 @@
 **Autism Ally**
 
-This application targets to provide support for people with autism as well as theirfamilies, while it demystifies the myths associated with autism here in Africa. In many African communities, autism is often misunderstood and stigmatized, with misconceptions attributing it to witchcraft or curses. Autism Ally aims to eradicate these harmful myths and foster a deeper understanding of autism as a neurological condition that can affect anyone, regardless of background. With stories of successful people who are autistic, we also aim to help people understand that the strengths and uniqueness that comes with autism, with the right support can result in great accomplishments.
+This application aims to provide support for people with autism as well as their families, while it demystifies the myths associated with autism here in Africa. In many African communities, autism is often misunderstood and stigmatized, with misconceptions attributing it to witchcraft or curses. Autism Ally aims to eradicate these harmful myths and foster a deeper understanding of autism as a neurological condition that can affect anyone, regardless of background. With stories of successful people who are autistic, we also aim to help people understand that the strengths and uniqueness that come with autism, with the right support, can result in great accomplishments.
 
 **Technologies Used**
 
